@@ -128,9 +128,10 @@ function App() {
         const settingsSub = supabase
             .channel('public:event_settings')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'event_settings' }, (payload) => {
-                if (payload.new) {
-                    if (payload.new.booking_opens_at) setBookingOpensAt(new Date(payload.new.booking_opens_at))
-                    if (payload.new.booking_closes_at) setBookingClosesAt(new Date(payload.new.booking_closes_at))
+                const newData = payload.new as any
+                if (newData) {
+                    if (newData.booking_opens_at) setBookingOpensAt(new Date(newData.booking_opens_at))
+                    if (newData.booking_closes_at) setBookingClosesAt(new Date(newData.booking_closes_at))
                     else setBookingClosesAt(null) // Handle reopening if closes_at becomes null
                 }
             })
