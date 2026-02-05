@@ -264,27 +264,28 @@ function App() {
     return (
         <div className="h-screen w-screen overflow-hidden flex flex-col bg-gradient-to-br from-blue-50 to-indigo-100">
             {/* Compact Header */}
-            <div className="relative z-10 px-6 py-3 bg-white shadow-sm border-b border-gray-200">
+            <div className="relative z-10 px-3 sm:px-6 py-2 sm:py-3 bg-white shadow-sm border-b border-gray-200">
                 <div className="flex justify-between items-center max-w-7xl mx-auto">
-                    <div className="text-gray-700 text-sm font-medium">
+                    <div className="text-gray-700 text-xs sm:text-sm font-medium">
                         {isAdmin ? (
-                            <span className="flex items-center gap-2">
+                            <span className="flex items-center gap-1 sm:gap-2">
                                 <span className="bg-rose-100 text-rose-700 px-2 py-1 rounded text-xs font-bold">ADMIN</span>
-                                <span>{currentUser?.venue} ({currentUser?.email})</span>
+                                <span className="hidden sm:inline">{currentUser?.venue} ({currentUser?.email})</span>
+                                <span className="sm:hidden">{currentUser?.venue}</span>
                             </span>
                         ) : (
-                            <span className="flex items-center gap-2">
+                            <span className="flex items-center gap-1 sm:gap-2 flex-wrap">
                                 <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">USER</span>
-                                <span>{currentUser?.venue}</span>
-                                <span className="text-gray-400">•</span>
-                                <span>{userBookedSlots.size}/1 Booked {userBookedSong && <span className="text-blue-600 font-bold">({userBookedSong})</span>}</span>
+                                <span className="hidden sm:inline">{currentUser?.venue}</span>
+                                <span className="text-gray-400 hidden sm:inline">•</span>
+                                <span className="text-xs">{userBookedSlots.size}/1 {userBookedSong && <span className="text-blue-600 font-bold">({userBookedSong})</span>}</span>
                             </span>
                         )}
                     </div>
-                    <div className="flex gap-3 items-center">
+                    <div className="flex gap-2 sm:gap-3 items-center">
                         <button
                             onClick={handleLogout}
-                            className="px-4 py-2 text-sm font-medium text-white bg-gray-700 hover:bg-gray-800 rounded-lg transition-colors"
+                            className="px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm font-medium text-white bg-gray-700 hover:bg-gray-800 rounded-lg transition-colors"
                         >
                             LOGOUT
                         </button>
@@ -312,13 +313,13 @@ function App() {
                 </div>
             )}
 
-            {/* Main Content - Grid Layout */}
-            <div className="flex-1 w-full max-w-[1600px] mx-auto p-6 grid grid-cols-[1fr_320px] gap-8 overflow-auto">
+            {/* Main Content - Responsive Grid Layout */}
+            <div className="flex-1 w-full mx-auto p-3 sm:p-4 md:p-6 flex flex-col lg:grid lg:grid-cols-[1fr_320px] gap-4 md:gap-6 lg:gap-8 overflow-auto">
 
                 {/* Left Side: Billboard + Toolbar (Centered) */}
-                <div className="flex flex-col items-center justify-center min-h-0">
+                <div className="flex flex-col items-center justify-center min-h-0 w-full">
                     {/* Toolbar - Above Billboard */}
-                    <div className="mb-8 w-full max-w-[700px] flex justify-center z-30 relative">
+                    <div className="mb-4 sm:mb-6 md:mb-8 w-full max-w-[700px] flex justify-center z-30 relative px-3 sm:px-0">
                         <GridToolbar
                             selectionCount={selectedPlots.length}
                             sizeLabel={sizeLabel}
@@ -351,9 +352,9 @@ function App() {
                     </div>
                 </div>
                 {/* Right Side: Statistics & Countdown (Fixed + Centered Vertically) */}
-                <div className="flex flex-col justify-center gap-6 h-full">
+                <div className="flex flex-col justify-center gap-4 md:gap-6 h-full w-full max-w-md lg:max-w-none mx-auto">
                     {/* Countdown Card */}
-                    <div className="bg-white/90 backdrop-blur rounded-2xl p-6 shadow-xl border border-white/50">
+                    <div className="bg-white/90 backdrop-blur rounded-2xl p-4 sm:p-6 shadow-xl border border-white/50">
                         <h3 className="text-gray-500 text-xs font-bold tracking-wider mb-4 uppercase text-center">
                             {bookingClosesAt && new Date() > bookingClosesAt ? "Booking Closed" : (timeRemaining.seconds > 0 || timeRemaining.minutes > 0 || timeRemaining.hours > 0 ? "Event Starts In" : "Booking Open!")}
                         </h3>
@@ -406,23 +407,23 @@ function App() {
                                 </button>
                             </div>
                         )}
-                        <div className="flex justify-between gap-2">
+                        <div className="flex justify-between gap-1 sm:gap-2">
                             <div className="flex flex-col items-center">
-                                <div className="text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-2 min-w-[60px] text-center border border-gray-200">
+                                <div className="text-2xl sm:text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-1.5 sm:p-2 min-w-[50px] sm:min-w-[60px] text-center border border-gray-200">
                                     {String(timeRemaining.hours).padStart(2, '0')}
                                 </div>
                                 <span className="text-[10px] text-gray-400 font-bold mt-1">HRS</span>
                             </div>
-                            <div className="text-2xl font-bold text-gray-300 self-start mt-2">:</div>
+                            <div className="text-xl sm:text-2xl font-bold text-gray-300 self-start mt-1 sm:mt-2">:</div>
                             <div className="flex flex-col items-center">
-                                <div className="text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-2 min-w-[60px] text-center border border-gray-200">
+                                <div className="text-2xl sm:text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-1.5 sm:p-2 min-w-[50px] sm:min-w-[60px] text-center border border-gray-200">
                                     {String(timeRemaining.minutes).padStart(2, '0')}
                                 </div>
                                 <span className="text-[10px] text-gray-400 font-bold mt-1">MIN</span>
                             </div>
-                            <div className="text-2xl font-bold text-gray-300 self-start mt-2">:</div>
+                            <div className="text-xl sm:text-2xl font-bold text-gray-300 self-start mt-1 sm:mt-2">:</div>
                             <div className="flex flex-col items-center">
-                                <div className="text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-2 min-w-[60px] text-center border border-gray-200">
+                                <div className="text-2xl sm:text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-1.5 sm:p-2 min-w-[50px] sm:min-w-[60px] text-center border border-gray-200">
                                     {String(timeRemaining.seconds).padStart(2, '0')}
                                 </div>
                                 <span className="text-[10px] text-gray-400 font-bold mt-1">SEC</span>
@@ -431,7 +432,7 @@ function App() {
                     </div>
 
                     {/* Stats Card */}
-                    <div className="bg-white/90 backdrop-blur rounded-2xl p-6 shadow-xl border border-white/50 flex flex-col gap-4">
+                    <div className="bg-white/90 backdrop-blur rounded-2xl p-4 sm:p-6 shadow-xl border border-white/50 flex flex-col gap-3 sm:gap-4">
                         <div className="flex justify-between items-center pb-4 border-b border-gray-100">
                             <span className="text-gray-500 text-xs font-bold uppercase">Booked Slots</span>
                             <span className="text-2xl font-bold text-rose-500">{bookedSlots.size}</span>

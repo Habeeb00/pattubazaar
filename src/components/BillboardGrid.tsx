@@ -349,7 +349,7 @@ export function BillboardGrid({
                 role="grid"
                 tabIndex={0}
                 aria-label="Billboard selection grid"
-                className="w-[600px] h-[600px] bg-slate-900 grid grid-cols-10 grid-rows-10 gap-[2px] overflow-visible"
+                className="w-full max-w-[600px] aspect-square bg-slate-900 grid grid-cols-10 grid-rows-10 gap-[2px] overflow-visible"
             >
                 {Array.from({ length: TOTAL_CELLS }).map((_, index) => {
                     const row = Math.floor(index / GRID_COLS);
