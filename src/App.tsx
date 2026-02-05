@@ -370,6 +370,10 @@ function App() {
                                         if (error) {
                                             console.error(error)
                                             alert('Failed to start timer! Check Supabase table "event_settings"')
+                                        } else {
+                                            // Immediately update local state for instant feedback
+                                            setBookingOpensAt(startAt)
+                                            setBookingClosesAt(null)
                                         }
                                     }}
                                     className="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded hover:bg-green-700 transition shadow-sm"
@@ -378,14 +382,18 @@ function App() {
                                 </button>
                                 <button
                                     onClick={async () => {
+                                        const closeAt = new Date()
                                         const { error } = await supabase
                                             .from('event_settings')
-                                            .update({ booking_closes_at: new Date().toISOString() })
+                                            .update({ booking_closes_at: closeAt.toISOString() })
                                             .eq('id', 1)
 
                                         if (error) {
                                             console.error(error)
                                             alert('Failed to stop booking!')
+                                        } else {
+                                            // Immediately update local state
+                                            setBookingClosesAt(closeAt)
                                         }
                                     }}
                                     className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition shadow-sm"
