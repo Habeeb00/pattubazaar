@@ -336,7 +336,6 @@ function App() {
                                     purchasedPlotIds={purchasedPlotIds}
                                     isAdmin={isAdmin}
                                     onDeleteAd={handleDeleteAd}
-                                    onStartPurchase={handleStartPurchase}
                                 />
                             </div>
 

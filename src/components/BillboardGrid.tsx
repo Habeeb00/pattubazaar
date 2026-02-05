@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import type { Ad } from "../types";
-import { GridToolbar } from "./GridToolbar";
 
 const GRID_COLS = 10;
 const GRID_ROWS = 10;
@@ -254,7 +253,6 @@ interface BillboardGridProps {
     purchasedPlotIds: Set<string>;
     isAdmin: boolean;
     onDeleteAd: (adId: string) => void;
-    onStartPurchase?: (plots: string[]) => void;
 }
 
 export function BillboardGrid({
@@ -264,7 +262,6 @@ export function BillboardGrid({
     purchasedPlotIds,
     isAdmin,
     onDeleteAd,
-    onStartPurchase,
 }: BillboardGridProps) {
     const gridRef = useRef<HTMLDivElement | null>(null);
     const selectedPlotsSet = useMemo(() => new Set(selectedPlots), [selectedPlots]);
