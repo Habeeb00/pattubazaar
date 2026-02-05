@@ -116,10 +116,14 @@ function App() {
         const bookingSub = supabase
             .channel('public:bookings')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, (payload) => {
+                console.log('Booking update:', payload)
+                const newRecord = payload.new as any
+                const oldRecord = payload.old as any
+
                 if (payload.eventType === 'INSERT') {
-                    setBookings(prev => [...prev, payload.new])
+                    setBookings(prev => [...prev, newRecord])
                 } else if (payload.eventType === 'DELETE') {
-                    setBookings(prev => prev.filter(b => b.id !== payload.old.id))
+                    setBookings(prev => prev.filter(b => b.id !== oldRecord.id))
                 }
             })
             .subscribe()
