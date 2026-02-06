@@ -97,15 +97,8 @@ function App() {
                         // Ignore audio errors
                     }
                 }
-
-                setTimeRemaining({
-                    hours: Math.floor(diff / (1000 * 60 * 60)),
-                    minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-                    seconds: Math.floor((diff % (1000 * 60)) / 1000)
-                })
             } else {
                 setTotalSeconds(0)
-                setTimeRemaining({ hours: 0, minutes: 0, seconds: 0 })
             }
         }, 1000)
 
