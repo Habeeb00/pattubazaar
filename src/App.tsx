@@ -23,6 +23,8 @@ function App() {
     // Auth State
     const [currentUser, setCurrentUser] = useState<{ email: string; venue: string; role: string } | null>(null)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isBookingLive, setIsBookingLive] = useState(false)
+    const [totalSeconds, setTotalSeconds] = useState(0)
 
     const [selectedPlots, setSelectedPlots] = useState<string[]>([])
     const [ads] = useState<Ad[]>(INITIAL_ADS)
