@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Beth+Ellen&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,30 +7,69 @@
 
 @layer base {
   body {
-    @apply bg-sky-400 text-white min-h-screen overflow-x-hidden;
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    @apply bg-gradient-to-br from-[#4f46e5] to-[#3b82f6] text-white min-h-screen overflow-x-hidden;
+    font-family: 'Cabinet Grotesk', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    image-rendering: pixelated;
   }
 
-  * {
-    @apply box-border;
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
   }
 }
 
 @layer components {
 
-  /* Retro pixel font */
-  .pixel-font {
-    font-family: 'Press Start 2P', cursive;
-    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+  /* Typography */
+  .font-display {
+    font-family: 'Cabinet Grotesk', sans-serif;
   }
 
-  /* Billboard frame */
+  .font-hand {
+    font-family: 'Beth Ellen', cursive;
+  }
+
+  /* Glass/Card Styles */
+  .glass-panel {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-xl;
+  }
+
+  .glass-panel-dark {
+    @apply bg-black/20 backdrop-blur-md border border-white/10 shadow-xl rounded-xl;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply px-6 py-3 font-bold uppercase tracking-wider text-sm text-white bg-[#FF007F] rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-pink-500/50 hover:bg-[#ff1a8c] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100;
+  }
+
+  .btn-warning {
+    @apply px-4 py-2 font-bold uppercase tracking-wider text-xs text-white bg-orange-500 rounded-full shadow-lg transition-all hover:bg-orange-600;
+  }
+
+  .btn-danger {
+    @apply px-4 py-2 font-bold uppercase tracking-wider text-xs text-white bg-red-600 rounded-full shadow-lg transition-all hover:bg-red-700;
+  }
+
+  /* Billboard Specifics - Restored Retro Look */
   .billboard-frame {
-    @apply bg-gradient-to-b from-gray-800 to-gray-900 border-8 border-gray-700 relative;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    @apply bg-gradient-to-b from-gray-800 to-gray-900 relative;
+    border: 8px solid #374151;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.1);
   }
 
   .billboard-frame::before {
@@ -37,28 +77,27 @@
     @apply absolute -inset-2 bg-gradient-to-br from-gray-600 to-gray-800 -z-10 rounded-sm;
   }
 
-  /* Billboard grid background */
   .billboard-grid {
-    @apply bg-slate-800 relative;
+    @apply bg-slate-800 relative rounded-none border-none shadow-none;
     background-image:
       linear-gradient(rgba(71, 85, 105, 0.3) 1px, transparent 1px),
       linear-gradient(90deg, rgba(71, 85, 105, 0.3) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
-  /* Slot card */
+  /* Slot Cards - Restored Retro Look */
   .slot-card {
     @apply relative transition-all duration-300 cursor-pointer border-2 border-slate-600/50 hover:border-yellow-400 hover:scale-105 hover:z-10 shadow-lg hover:shadow-2xl;
   }
 
-  .slot-card-available {
+  .slot-card-available.selected {
     @apply bg-slate-700/80 border-green-500/70 animate-pulse-slow;
     box-shadow:
       0 0 20px rgba(34, 197, 94, 0.3),
       inset 0 0 20px rgba(34, 197, 94, 0.1);
   }
 
-  .slot-card-available:hover {
+  .slot-card-available.selected:hover {
     box-shadow:
       0 0 30px rgba(34, 197, 94, 0.6),
       inset 0 0 30px rgba(34, 197, 94, 0.2);
@@ -66,6 +105,7 @@
 
   .slot-card-claimed {
     @apply bg-slate-800/90 cursor-default hover:scale-100 hover:border-slate-600/50;
+    filter: none;
   }
 
   .slot-card-my-claim {
@@ -75,15 +115,17 @@
       inset 0 0 20px rgba(234, 179, 8, 0.2);
   }
 
-  /* Retro button */
+  /* Retro buttons */
   .btn-retro {
-    @apply px-6 py-3 font-bold uppercase tracking-wider bg-gradient-to-b from-yellow-400 to-yellow-600 text-black border-4 border-yellow-300 transition-all duration-100 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply px-6 py-3 font-bold uppercase tracking-wider bg-gradient-to-b from-yellow-400 to-yellow-600 text-black border-4 border-yellow-300 transition-all duration-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-none shadow-none transform-none;
     box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
   }
 
   .btn-retro:hover:not(:disabled) {
     box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
     transform: translate(2px, 2px);
+    background-color: transparent;
+    /* Reset any potential bg overrides */
   }
 
   .btn-retro:active:not(:disabled) {
@@ -91,82 +133,21 @@
     transform: translate(4px, 4px);
   }
 
-  .btn-logout {
-    @apply px-4 py-2 font-bold uppercase tracking-wider text-sm bg-gradient-to-b from-red-500 to-red-700 text-white border-4 border-red-400 transition-all duration-100;
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+  /* Cloud Animations */
+  .cloud {
+    @apply absolute bg-white/20 blur-2xl rounded-full opacity-60 pointer-events-none;
+    animation: float 6s ease-in-out infinite;
   }
 
-  .btn-logout:hover {
-    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
-    transform: translate(2px, 2px);
-  }
+  @keyframes float {
 
-  .btn-theme {
-    @apply px-4 py-2 font-bold uppercase tracking-wider text-sm bg-gradient-to-b from-purple-500 to-purple-700 text-white border-4 border-purple-400 transition-all duration-100;
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
-  }
-
-  .btn-theme:hover {
-    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
-    transform: translate(2px, 2px);
-  }
-
-  .btn-about {
-    @apply px-4 py-2 font-bold uppercase tracking-wider text-sm bg-gradient-to-b from-orange-500 to-orange-700 text-white border-4 border-orange-400 transition-all duration-100;
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
-  }
-
-  .btn-about:hover {
-    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
-    transform: translate(2px, 2px);
-  }
-
-  /* Pixel clouds */
-  .pixel-cloud {
-    @apply absolute bg-white rounded-full opacity-90;
-    box-shadow:
-      20px 0 0 white,
-      40px 0 0 white,
-      -20px 0 0 white,
-      10px -10px 0 white,
-      30px -10px 0 white,
-      10px 10px 0 white,
-      30px 10px 0 white;
-  }
-
-  /* Retro text glow */
-  .text-glow {
-    text-shadow:
-      0 0 10px currentColor,
-      0 0 20px currentColor,
-      0 0 30px currentColor;
-  }
-
-  /* Countdown display */
-  .countdown-digit {
-    @apply bg-black border-4 border-gray-700 text-green-400 font-mono text-center relative;
-    box-shadow: inset 0 0 20px rgba(34, 197, 94, 0.3);
-  }
-
-  .countdown-digit::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-b from-transparent via-green-400/5 to-transparent;
-    animation: scanline 2s linear infinite;
-  }
-
-  @keyframes scanline {
-    0% {
-      transform: translateY(-100%);
-    }
-
+    0%,
     100% {
-      transform: translateY(100%);
+      transform: translateY(0px) translateX(0px);
     }
-  }
-}
 
-@layer utilities {
-  .clip-path-trapezoid {
-    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+    50% {
+      transform: translateY(-20px) translateX(10px);
+    }
   }
 }

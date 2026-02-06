@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useMemo } from 'react'
+import bannerImg from './assets/banner.png'
 import { BillboardGrid } from './components/BillboardGrid'
 import { GridToolbar } from './components/GridToolbar'
 import { AuthModal } from './components/AuthModal'
@@ -282,7 +283,6 @@ function App() {
             } else {
                 setSelectedPlots([])
                 setBookedImage(selectedAd?.imageUrl || null)
-                // alert('Slot booked successfully! 🎉') // Replaced by modal
             }
         }
     }
@@ -293,30 +293,38 @@ function App() {
     }
 
     return (
-        <div className="h-screen w-screen overflow-hidden flex flex-col bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="h-screen w-screen overflow-hidden flex flex-col relative">
+            {/* Background Clouds Animation */}
+            <div className="absolute top-20 left-10 w-32 h-32 cloud z-0"></div>
+            <div className="absolute top-40 right-20 w-48 h-48 cloud z-0" style={{ animationDelay: '2s' }}></div>
+            <div className="absolute bottom-20 left-1/3 w-40 h-40 cloud z-0" style={{ animationDelay: '4s' }}></div>
+
+            {/* Banner Image - Top Left Corner */}
+            <div className="absolute top-0 left-0 z-50 p-4">
+                <img src={bannerImg} alt="Pattu Bazaar" className="w-24 sm:w-32 h-auto object-contain drop-shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300" />
+            </div>
+
             {/* Compact Header */}
-            <div className="relative z-10 px-3 sm:px-6 py-2 sm:py-3 bg-white shadow-sm border-b border-gray-200">
+            <div className="relative z-10 px-3 sm:px-6 py-2 sm:py-3 border-b border-white/10 bg-white/5 backdrop-blur-sm pl-28 sm:pl-36">
                 <div className="flex justify-between items-center max-w-7xl mx-auto">
-                    <div className="text-gray-700 text-xs sm:text-sm font-medium">
+                    <div className="text-white text-xs sm:text-sm font-medium font-display tracking-widest">
                         {isAdmin ? (
                             <span className="flex items-center gap-1 sm:gap-2">
-                                <span className="bg-rose-100 text-rose-700 px-2 py-1 rounded text-xs font-bold">ADMIN</span>
-                                <span className="hidden sm:inline">{currentUser?.venue} ({currentUser?.email})</span>
+                                <span className="bg-pink-600 text-white px-2 py-1 rounded text-xs font-bold">ADMIN</span>
+                                <span className="hidden sm:inline opacity-80">{currentUser?.venue} ({currentUser?.email})</span>
                                 <span className="sm:hidden">{currentUser?.venue}</span>
                             </span>
                         ) : (
                             <span className="flex items-center gap-1 sm:gap-2 flex-wrap">
-                                <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">USER</span>
-                                <span className="hidden sm:inline">{currentUser?.venue}</span>
-                                <span className="text-gray-400 hidden sm:inline">•</span>
-                                <span className="text-xs">{userBookedSlots.size}/1 {userBookedSong && <span className="text-blue-600 font-bold">({userBookedSong})</span>}</span>
+                                <span className="bg-blue-500/20 border border-blue-400/50 text-blue-100 px-2 py-1 rounded text-xs font-bold">USER</span>
+                                <span className="hidden sm:inline font-bold">{currentUser?.venue}</span>
                             </span>
                         )}
                     </div>
                     <div className="flex gap-2 sm:gap-3 items-center">
                         <button
                             onClick={handleLogout}
-                            className="px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm font-medium text-white bg-gray-700 hover:bg-gray-800 rounded-lg transition-colors"
+                            className="px-4 py-1 text-xs font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-full transition-colors font-display tracking-wider"
                         >
                             LOGOUT
                         </button>
@@ -348,24 +356,24 @@ function App() {
             <div className="flex-1 w-full mx-auto p-3 sm:p-4 md:p-6 flex flex-col lg:flex-row items-center lg:items-center gap-4 md:gap-6 lg:gap-12 overflow-y-auto lg:overflow-hidden justify-center h-full min-h-0">
 
                 {/* DESKTOP ONLY: Left Side (Countdown) */}
-                <div className="hidden lg:flex flex-col gap-6 w-80 items-center justify-center order-1">
-                    <div className="w-full bg-white rounded-xl shadow-xl p-6 border-4 border-gray-100 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
-                        <div className="text-center mb-4 border-b-2 border-gray-100 pb-2">
-                            <span className="text-xl font-bold text-gray-800 tracking-tight uppercase">Booking Starts In</span>
+                <div className="hidden lg:flex flex-col gap-6 w-80 items-center justify-center order-1 z-10">
+                    <div className="w-full bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-300 border border-white/40">
+                        <div className="text-center mb-6">
+                            <span className="text-2xl font-bold text-gray-800 font-display tracking-wider uppercase drop-shadow-sm">Booking Starts In</span>
                         </div>
 
                         <div className="flex justify-center gap-2 mb-4">
                             {isBookingLive ? (
                                 <div className="flex flex-col items-center animate-pulse">
-                                    <span className="text-4xl font-black text-emerald-600 tracking-wider">LIVE</span>
-                                    <span className="text-xs font-bold text-emerald-500 uppercase tracking-widest">Booking Open</span>
+                                    <span className="text-5xl font-black text-white tracking-wider font-display drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">LIVE</span>
+                                    <span className="text-xs font-bold text-pink-300 uppercase tracking-widest mt-2">Booking Open</span>
                                 </div>
                             ) : (
-                                <div className={`flex flex-col items-center bg-gray-50 rounded-lg p-4 border border-gray-200 min-w-[120px] transition-all duration-200 ${totalSeconds <= 3 && totalSeconds > 0 ? 'scale-110 bg-red-50 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : ''}`}>
-                                    <span className={`text-5xl font-mono font-bold leading-none ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-600' : 'text-gray-900'}`}>
+                                <div className={`flex flex-col items-center bg-gray-50 rounded-lg p-6 min-w-[140px] border-4 border-gray-200 transition-all duration-200 ${totalSeconds <= 3 && totalSeconds > 0 ? 'scale-110 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : ''}`}>
+                                    <span className={`text-6xl font-mono font-black leading-none ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-900'}`}>
                                         {totalSeconds}
                                     </span>
-                                    <span className={`text-xs font-bold mt-1 tracking-widest ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-500'}`}>SECONDS</span>
+                                    <span className={`text-xs font-bold mt-2 tracking-[0.3em] uppercase ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-400'}`}>Seconds</span>
                                 </div>
                             )}
                         </div>
@@ -402,9 +410,9 @@ function App() {
                 <div className="flex flex-col items-center order-2 w-full lg:w-auto">
 
                     {/* MOBILE ONLY: Top Countdown */}
-                    <div className="lg:hidden w-full max-w-[600px] mb-2 px-2">
-                        <div className="bg-white rounded-xl shadow-lg p-2 sm:p-4 flex items-center justify-between border-b-4 border-gray-200">
-                            <span className="text-sm sm:text-xl font-bold text-gray-800 tracking-tight">booking starts in</span>
+                    <div className="lg:hidden w-full max-w-[600px] mb-2 px-2 z-30">
+                        <div className="bg-white/90 backdrop-blur-sm p-3 sm:p-6 rounded-xl shadow-xl border border-white/40 flex items-center justify-between">
+                            <span className="text-sm sm:text-lg font-bold text-gray-800 font-display uppercase tracking-wide">booking starts in</span>
                             {/* Admin Controls embedded here for desktop/mobile accessibility if needed, or specific admin panel logic could go here */}
                             {isAdmin && (
                                 <div className="hidden sm:flex gap-2">
@@ -430,15 +438,15 @@ function App() {
                                     </button>
                                 </div>
                             )}
-                            <div className="flex flex-col items-center bg-gray-100 rounded-lg p-1 px-2 sm:p-2 border border-gray-200">
+                            <div className={`flex flex-col items-center bg-gray-50 rounded-lg px-3 py-2 sm:p-3 min-w-[70px] border-2 border-gray-200 ${totalSeconds <= 3 && totalSeconds > 0 ? 'border-red-500 bg-red-50' : ''}`}>
                                 {isBookingLive ? (
-                                    <span className="text-lg sm:text-2xl font-black text-emerald-600 leading-none tracking-wider animate-pulse">LIVE</span>
+                                    <span className="text-lg sm:text-2xl font-black text-emerald-600 leading-none tracking-wider animate-pulse font-display">LIVE</span>
                                 ) : (
                                     <>
-                                        <span className={`text-lg sm:text-2xl font-mono font-bold leading-none ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-600' : 'text-gray-900'}`}>
+                                        <span className={`text-xl sm:text-3xl font-mono font-bold leading-none ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-600' : 'text-gray-900'}`}>
                                             {totalSeconds}
                                         </span>
-                                        <span className={`text-[9px] sm:text-[10px] font-bold mt-0.5 sm:mt-1 ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-500'}`}>SEC</span>
+                                        <span className={`text-[9px] sm:text-[10px] font-bold mt-0.5 sm:mt-1 uppercase tracking-wider ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-400'}`}>SEC</span>
                                     </>
                                 )}
                             </div>
@@ -461,9 +469,9 @@ function App() {
                     {/* Billboard Structure */}
                     <div className="relative flex flex-col items-center z-20 pt-10">
                         {/* The Board Frame */}
-                        <div className="relative z-20 bg-gray-800 p-2 sm:p-4 shadow-2xl rounded-sm flex flex-col gap-2 scale-90 sm:scale-100 origin-top lg:scale-100 transition-transform duration-300">
+                        <div className="relative z-20 billboard-frame p-6 shadow-2xl flex flex-col gap-2 scale-90 sm:scale-100 origin-top lg:scale-100 transition-transform duration-300">
                             {/* Inner Bezel with Grid */}
-                            <div className="bg-gray-900 p-2 border-4 border-gray-700/50 shadow-inner">
+                            <div className="billboard-grid p-2 shadow-inner">
                                 <BillboardGrid
                                     ads={ads}
                                     selectedPlots={selectedPlots}
@@ -475,43 +483,43 @@ function App() {
                             </div>
 
                             {/* Integrated Bottom Plaque */}
-                            <div className="w-full py-2 bg-gray-800 flex items-center justify-center text-[10px] text-gray-400 font-bold tracking-[0.2em] uppercase border-t border-gray-700/50">
-                                Pattu Bazaar
+                            <div className="w-full py-2 flex items-center justify-center text-[10px] text-[#FF007F] font-black tracking-[0.3em] uppercase border-t border-white/5 font-display drop-shadow-[0_0_5px_rgba(255,0,127,0.8)]">
+                                Pattu Bazaar • Est 2026
                             </div>
                         </div>
 
-                        {/* DESKTOP ONLY: Stand/Pole */}
-                        <div className="hidden lg:block w-40 h-[200px] mt-[-2px] bg-gradient-to-r from-gray-700 to-gray-600 border-x-4 border-gray-800 shadow-2xl z-10"></div>
+                        {/* DESKTOP ONLY: Stand/Pole - Updated to black */}
+                        <div className="hidden lg:block w-32 h-[200px] -mt-1 bg-black border-x-4 border-black z-10 shadow-2xl"></div>
                     </div>
 
                     {/* MOBILE ONLY: Pole & Split Stats */}
-                    <div className="lg:hidden relative w-full flex justify-center mt-[-30px] sm:mt-[-2px] pb-8 overflow-visible z-10 transition-all">
-                        {/* The Pole */}
-                        <div className="absolute top-0 w-24 sm:w-32 h-[300px] bg-gradient-to-r from-gray-300 to-gray-400 border-x-2 border-gray-400/50 z-0"></div>
+                    <div className="lg:hidden relative w-full flex justify-center -mt-8 sm:-mt-1 pb-8 overflow-visible z-10 transition-all">
+                        {/* The Pole - Black Style */}
+                        <div className="absolute top-0 w-24 sm:w-32 h-[300px] bg-black border-x-4 border-black z-0 shadow-2xl"></div>
 
-                        {/* Stats Container */}
+                        {/* Stats Container - Replaced with Glass cards */}
                         <div className="relative z-10 flex w-full max-w-[500px] justify-between px-4 mt-8 gap-2">
 
                             {/* Left: Capacity */}
-                            <div className="bg-gray-200/90 backdrop-blur-sm p-2 sm:p-4 rounded-lg shadow-xl border-2 border-white/50 w-28 sm:w-32 flex flex-col items-center justify-center text-center gap-1 transform rotate-[-2deg]">
-                                <span className="text-emerald-500 font-bold text-lg sm:text-2xl drop-shadow-sm">
+                            <div className="bg-white/90 backdrop-blur-sm p-4 w-32 sm:w-36 flex flex-col items-center justify-center text-center gap-1 transform rotate-[-2deg] rounded-xl shadow-xl border border-white/40">
+                                <span className="text-gray-900 font-bold font-display text-2xl sm:text-3xl drop-shadow-sm">
                                     {Math.round((bookedSlots.size / 100) * 100)}%
                                 </span>
-                                <span className="text-[9px] sm:text-[10px] font-bold text-gray-600 uppercase leading-tight bg-white/50 px-2 py-1 rounded">
+                                <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase leading-tight px-2 py-1 rounded">
                                     Capacity<br />Reached
                                 </span>
                             </div>
 
                             {/* Right: Booked/Available */}
-                            <div className="bg-gray-200/90 backdrop-blur-sm p-2 sm:p-4 rounded-lg shadow-xl border-2 border-white/50 w-28 sm:w-32 flex flex-col items-center justify-center text-center gap-2 transform rotate-[2deg]">
+                            <div className="bg-white/90 backdrop-blur-sm p-4 w-32 sm:w-36 flex flex-col items-center justify-center text-center gap-2 transform rotate-[2deg] rounded-xl shadow-xl border border-white/40">
                                 <div className="flex flex-col">
-                                    <span className="text-[9px] sm:text-[10px] font-bold text-gray-600 uppercase">Booked</span>
-                                    <span className="text-rose-500 font-bold text-sm sm:text-lg">{bookedSlots.size}</span>
+                                    <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase">Booked</span>
+                                    <span className="text-pink-500 font-bold text-lg sm:text-xl font-display">{bookedSlots.size}</span>
                                 </div>
-                                <div className="w-full h-px bg-gray-300"></div>
+                                <div className="w-full h-px bg-gray-200"></div>
                                 <div className="flex flex-col">
-                                    <span className="text-[9px] sm:text-[10px] font-bold text-gray-600 uppercase">Available</span>
-                                    <span className="text-emerald-500 font-bold text-sm sm:text-lg">{100 - bookedSlots.size}</span>
+                                    <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase">Available</span>
+                                    <span className="text-emerald-400 font-bold text-lg sm:text-xl font-display">{100 - bookedSlots.size}</span>
                                 </div>
                             </div>
 
@@ -520,57 +528,57 @@ function App() {
                 </div>
 
                 {/* DESKTOP ONLY: Right Side (Stats) */}
-                <div className="hidden lg:flex flex-col gap-6 w-80 items-center justify-center order-3">
+                <div className="hidden lg:flex flex-col gap-6 w-80 items-center justify-center order-3 z-10">
                     {/* Capacity */}
-                    <div className="bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border-4 border-gray-100 w-full flex flex-col items-center justify-center text-center gap-2 transform rotate-1 hover:rotate-0 transition-transform duration-300">
-                        <span className="text-emerald-500 font-bold text-5xl drop-shadow-sm">
+                    <div className="bg-white/90 backdrop-blur-sm p-6 w-full flex flex-col items-center justify-center text-center gap-2 transform rotate-1 hover:rotate-0 transition-transform duration-300 rounded-xl shadow-xl border border-white/40">
+                        <span className="text-gray-900 font-display font-black text-7xl drop-shadow-sm">
                             {Math.round((bookedSlots.size / 100) * 100)}%
                         </span>
-                        <span className="text-sm font-bold text-gray-500 uppercase leading-tight bg-gray-50 px-3 py-1 rounded">
+                        <span className="text-xs font-bold text-gray-500 uppercase leading-tight tracking-widest px-3 py-1">
                             Capacity Reached
                         </span>
-                        <div className="mt-2 w-full h-3 bg-gray-200 rounded-full overflow-hidden border border-gray-300">
+                        <div className="mt-4 w-full h-3 bg-black/20 rounded-full overflow-hidden border border-white/10">
                             <div
-                                className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-500"
+                                className="h-full bg-[#FF007F] shadow-[0_0_10px_rgba(255,0,127,0.5)] transition-all duration-500"
                                 style={{ width: `${(bookedSlots.size / 100) * 100}%` }}
                             />
                         </div>
                     </div>
 
                     {/* Booked/Available */}
-                    <div className="bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border-4 border-gray-100 w-full flex flex-col items-center justify-center text-center gap-4 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+                    <div className="bg-white/90 backdrop-blur-sm p-6 w-full flex flex-col items-center justify-center text-center gap-4 transform -rotate-1 hover:rotate-0 transition-transform duration-300 rounded-xl shadow-xl border border-white/40">
                         <div className="flex justify-between w-full items-center">
-                            <span className="text-sm font-bold text-gray-500 uppercase">Booked Slots</span>
-                            <span className="text-rose-500 font-bold text-2xl">{bookedSlots.size}</span>
+                            <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Booked Slots</span>
+                            <span className="text-pink-500 font-bold text-3xl font-display">{bookedSlots.size}</span>
                         </div>
                         <div className="w-full h-px bg-gray-200"></div>
                         <div className="flex justify-between w-full items-center">
-                            <span className="text-sm font-bold text-gray-500 uppercase">Available</span>
-                            <span className="text-emerald-500 font-bold text-2xl">{100 - bookedSlots.size}</span>
+                            <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Available</span>
+                            <span className="text-emerald-400 font-bold text-3xl font-display">{100 - bookedSlots.size}</span>
                         </div>
                         <div className="w-full h-px bg-gray-200"></div>
                         <div className="flex justify-between w-full items-center">
-                            <span className="text-sm font-bold text-gray-500 uppercase">Selected</span>
+                            <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Selected</span>
                             <div className="flex flex-col items-end">
-                                <span className="text-blue-500 font-bold text-2xl">{selectedPlots.length}</span>
-                                {sizeLabel && <span className="text-[10px] text-gray-400 font-medium">{sizeLabel}</span>}
+                                <span className="text-gray-900 font-bold text-2xl font-display">{selectedPlots.length}</span>
+                                {sizeLabel && <span className="text-[10px] text-gray-400 font-medium font-mono">{sizeLabel}</span>}
                             </div>
                         </div>
 
                         {selectedPlots.length > 0 && (
                             <>
-                                <div className="w-full h-px bg-gray-200"></div>
+                                <div className="w-full h-px bg-white/10"></div>
                                 <div className="flex gap-2 w-full pt-2">
                                     <button
                                         onClick={() => setSelectedPlots([])}
-                                        className="flex-1 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-bold rounded hover:bg-gray-200 transition-colors uppercase"
+                                        className="flex-1 px-3 py-2 bg-white/10 text-white text-xs font-bold rounded-full hover:bg-white/20 transition-colors uppercase border border-white/20"
                                     >
                                         Clear
                                     </button>
                                     <button
                                         onClick={() => handleStartPurchase(selectedPlots)}
                                         disabled={!isBookingLive}
-                                        className="flex-1 px-3 py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors uppercase shadow-lg shadow-blue-200 disabled:shadow-none"
+                                        className="flex-1 btn-primary text-xs"
                                     >
                                         Book
                                     </button>

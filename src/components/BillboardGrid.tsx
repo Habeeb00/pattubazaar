@@ -111,7 +111,7 @@ const AdTooltip = ({ ad, rect }: { ad: Ad; rect: DOMRect }) => {
                 className="w-full object-cover border-2 border-gray-700 mb-2 rounded-sm"
                 style={{ aspectRatio: aspectRatio }}
             />
-            <p className="font-bold break-words text-sm" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+            <p className="font-bold break-words text-sm font-display">
                 {ad.message}
             </p>
             {ad.venueName && (
@@ -191,9 +191,9 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10 transition-opacity">
                     <button
                         onClick={handleLinkClick}
-                        className="bg-gradient-to-b from-blue-500 to-blue-700 text-white px-4 py-2 text-xs font-bold border-4 border-blue-400 shadow-[3px_3px_0px_rgba(0,0,0,0.5)] hover:shadow-[1px_1px_0px_rgba(0,0,0,0.5)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                        className="bg-[#FF007F] text-white px-4 py-2 text-xs font-bold border border-white/20 shadow-[0_4px_10px_rgba(255,0,127,0.5)] hover:bg-[#ff3399] transition-all rounded-full uppercase tracking-wider"
                     >
-                        🔗 Visit
+                        Visit
                     </button>
                 </div>
             )}
@@ -229,8 +229,8 @@ interface EmptyPlotProps {
 }
 
 const EmptyPlot: React.FC<EmptyPlotProps> = ({ plotId, isSelected, onMouseDown, onMouseEnter }) => {
-    const baseClasses = "relative z-10 w-full h-full transition-colors bg-slate-800 hover:bg-slate-700 cursor-pointer";
-    const selectedClasses = "outline outline-2 outline-green-400 outline-offset-[-2px]";
+    const baseClasses = "relative z-10 w-full h-full transition-colors bg-white/5 hover:bg-white/20 cursor-pointer border border-white/5";
+    const selectedClasses = "bg-green-500/50 border-green-400 shadow-[0_0_15px_rgba(34,197,94,0.5)] z-20";
 
     return (
         <div
@@ -349,7 +349,7 @@ export function BillboardGrid({
                 role="grid"
                 tabIndex={0}
                 aria-label="Billboard selection grid"
-                className="w-full max-w-[600px] aspect-square bg-slate-900 grid grid-cols-10 grid-rows-10 gap-[2px] overflow-visible"
+                className="w-full max-w-[600px] aspect-square bg-transparent grid grid-cols-10 grid-rows-10 gap-[1px] overflow-visible p-1"
             >
                 {Array.from({ length: TOTAL_CELLS }).map((_, index) => {
                     const row = Math.floor(index / GRID_COLS);
@@ -389,7 +389,7 @@ export function BillboardGrid({
                                     /* keep keyboard focus tracking */
                                 }}
                                 className={`${selectedPlotsSet.has(plotId)
-                                    ? "outline outline-2 outline-green-400 outline-offset-[-2px]"
+                                    ? "z-20"
                                     : ""
                                     }`}
                             >
