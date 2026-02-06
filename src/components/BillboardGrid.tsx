@@ -181,7 +181,7 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({
             {/* Darker overlay for booked slots */}
             {isBooked && (
                 <div className="absolute inset-0 bg-black/70 flex items-center justify-center pointer-events-none">
-                    <div className="bg-red-600 text-white px-3 py-1 text-xs font-bold border-2 border-red-400 rotate-[-15deg]">
+                    <div className="bg-[#FF007F] text-white px-2 py-0.5 text-[8px] sm:text-[10px] font-bold border-2 border-[#FF69B4] rotate-[-15deg] shadow-[0_0_10px_rgba(255,0,127,0.6)]">
                         BOOKED
                     </div>
                 </div>

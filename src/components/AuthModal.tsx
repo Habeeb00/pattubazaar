@@ -36,31 +36,29 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onLogin }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
-            <div className="glass-panel p-8 w-full max-w-md relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-500 to-blue-500"></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#4169E1] backdrop-blur-md">
+            <div className="bg-white/90 backdrop-blur-sm p-8 w-full max-w-md relative overflow-hidden rounded-xl shadow-2xl border border-white/40 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
 
                 <div className="text-center mb-8">
-                    <h2 className="text-4xl font-black text-white mb-2 font-display uppercase tracking-wider">Welcome</h2>
-                    <p className="text-blue-200 font-medium tracking-wide">Pattu Bazaar Event Access</p>
+                    <h2 className="text-4xl font-black text-gray-900 mb-2 font-display uppercase tracking-wider">Welcome</h2>
+                    <p className="text-gray-500 font-medium tracking-wide">Pattu Bazaar Event Access</p>
                 </div>
 
                 <form onSubmit={handleLogin} className="flex flex-col gap-6">
                     {/* Venue Selection */}
                     <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-pink-400 uppercase tracking-widest font-display">
+                        <label className="text-sm font-bold text-gray-500 uppercase tracking-widest font-display">
                             Select Venue
                         </label>
                         <select
                             value={selectedVenue}
                             onChange={(e) => setSelectedVenue(e.target.value)}
-                            className="w-full p-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-pink-500 transition-all font-medium text-white placeholder-white/50"
+                            className="w-full p-3 bg-white border-2 border-gray-200 rounded-lg focus:outline-none focus:border-pink-500 transition-all font-medium text-gray-900 placeholder-gray-400"
                             required
-                            style={{ color: 'white' }}
                         >
-                            <option value="" disabled className="bg-gray-800 text-gray-400">-- Choose your venue --</option>
+                            <option value="" disabled className="text-gray-400">-- Choose your venue --</option>
                             {AUTHORIZED_USERS.map((user) => (
-                                <option key={user.venue} value={user.venue} className="bg-gray-800 text-white">
+                                <option key={user.venue} value={user.venue} className="text-gray-900">
                                     {user.venue}
                                 </option>
                             ))}
@@ -69,7 +67,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onLogin }) => {
 
                     {/* Email Input */}
                     <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-pink-400 uppercase tracking-widest font-display">
+                        <label className="text-sm font-bold text-gray-500 uppercase tracking-widest font-display">
                             Email Access Code
                         </label>
                         <input
@@ -77,14 +75,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onLogin }) => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your authorized email"
-                            className="w-full p-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-pink-500 transition-all font-medium text-white placeholder-blue-300/50"
+                            className="w-full p-3 bg-white border-2 border-gray-200 rounded-lg focus:outline-none focus:border-pink-500 transition-all font-medium text-gray-900 placeholder-gray-400"
                             required
                         />
                     </div>
 
                     {/* Error Message */}
                     {error && (
-                        <div className="p-3 bg-red-500/20 text-red-200 text-sm font-bold rounded-lg border border-red-500/50 text-center animate-pulse">
+                        <div className="p-3 bg-red-50 text-red-600 text-sm font-bold rounded-lg border border-red-200 text-center animate-pulse">
                             {error}
                         </div>
                     )}
@@ -92,13 +90,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onLogin }) => {
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full btn-primary text-base py-4 mt-2"
+                        className="w-full btn-primary text-base py-4 mt-2 shadow-lg"
                     >
                         ENTER EVENT
                     </button>
                 </form>
 
-                <div className="mt-6 text-center text-[10px] text-white/30 uppercase tracking-[0.2em] font-display">
+                <div className="mt-6 text-center text-[10px] text-gray-400 uppercase tracking-[0.2em] font-display">
                     Restricted Access • Pattu Bazaar 2026
                 </div>
             </div>

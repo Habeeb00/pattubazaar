@@ -489,11 +489,11 @@ function App() {
                         </div>
 
                         {/* DESKTOP ONLY: Stand/Pole - Updated to black */}
-                        <div className="hidden lg:block w-32 h-[200px] -mt-1 bg-black border-x-4 border-black z-10 shadow-2xl"></div>
+                        <div className="hidden lg:block w-32 h-[200px] -mt-6 bg-black border-x-4 border-black z-10 shadow-2xl"></div>
                     </div>
 
                     {/* MOBILE ONLY: Pole & Split Stats */}
-                    <div className="lg:hidden relative w-full flex justify-center -mt-8 sm:-mt-1 pb-8 overflow-visible z-10 transition-all">
+                    <div className="lg:hidden relative w-full flex justify-center -mt-12 sm:-mt-8 pb-8 overflow-visible z-10 transition-all">
                         {/* The Pole - Black Style */}
                         <div className="absolute top-0 w-24 sm:w-32 h-[300px] bg-black border-x-4 border-black z-0 shadow-2xl"></div>
 
@@ -502,7 +502,7 @@ function App() {
 
                             {/* Left: Capacity */}
                             <div className="bg-white/90 backdrop-blur-sm p-4 w-32 sm:w-36 flex flex-col items-center justify-center text-center gap-1 transform rotate-[-2deg] rounded-xl shadow-xl border border-white/40">
-                                <span className="text-gray-900 font-bold font-display text-2xl sm:text-3xl drop-shadow-sm">
+                                <span className="text-gray-900 font-black font-display text-2xl sm:text-3xl drop-shadow-sm">
                                     {Math.round((bookedSlots.size / 100) * 100)}%
                                 </span>
                                 <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase leading-tight px-2 py-1 rounded">
