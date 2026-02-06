@@ -313,25 +313,124 @@ function App() {
                 </div>
             )}
 
-            {/* Main Content - Responsive Grid Layout */}
-            <div className="flex-1 w-full mx-auto p-3 sm:p-4 md:p-6 flex flex-col lg:grid lg:grid-cols-[1fr_320px] gap-4 md:gap-6 lg:gap-8 overflow-auto">
+            {/* Main Content - Centered Layout for both Mobile & Desktop */}
+            <div className="flex-1 w-full mx-auto p-3 sm:p-4 md:p-6 flex flex-col lg:flex-row items-center lg:items-center gap-4 md:gap-6 lg:gap-12 overflow-y-auto lg:overflow-hidden justify-center h-full min-h-0">
 
-                {/* Left Side: Billboard + Toolbar (Centered) */}
-                <div className="flex flex-col items-center justify-center min-h-0 w-full">
-                    {/* Toolbar - Above Billboard */}
-                    <div className="mb-4 sm:mb-6 md:mb-8 w-full max-w-[700px] flex justify-center z-30 relative px-3 sm:px-0">
-                        <GridToolbar
-                            selectionCount={selectedPlots.length}
-                            sizeLabel={sizeLabel}
-                            onClear={() => setSelectedPlots([])}
-                            onPurchase={() => handleStartPurchase(selectedPlots)}
-                        />
+                {/* DESKTOP ONLY: Left Side (Countdown) */}
+                <div className="hidden lg:flex flex-col gap-6 w-80 items-center justify-center order-1">
+                    <div className="w-full bg-white rounded-xl shadow-xl p-6 border-4 border-gray-100 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+                        <div className="text-center mb-4 border-b-2 border-gray-100 pb-2">
+                            <span className="text-xl font-bold text-gray-800 tracking-tight uppercase">Booking Starts In</span>
+                        </div>
+
+                        <div className="flex justify-center gap-2 mb-4">
+                            <div className="flex flex-col items-center bg-gray-50 rounded-lg p-2 border border-gray-200 min-w-[60px]">
+                                <span className="text-3xl font-mono font-bold text-gray-900 leading-none">
+                                    {String(timeRemaining.hours).padStart(2, '0')}
+                                </span>
+                                <span className="text-[10px] text-gray-500 font-bold mt-1">HRS</span>
+                            </div>
+                            <span className="text-2xl font-bold text-gray-300 mt-2">:</span>
+                            <div className="flex flex-col items-center bg-gray-50 rounded-lg p-2 border border-gray-200 min-w-[60px]">
+                                <span className="text-3xl font-mono font-bold text-gray-900 leading-none">
+                                    {String(timeRemaining.minutes).padStart(2, '0')}
+                                </span>
+                                <span className="text-[10px] text-gray-500 font-bold mt-1">MIN</span>
+                            </div>
+                            <span className="text-2xl font-bold text-gray-300 mt-2">:</span>
+                            <div className="flex flex-col items-center bg-gray-50 rounded-lg p-2 border border-gray-200 min-w-[60px]">
+                                <span className="text-3xl font-mono font-bold text-gray-900 leading-none">
+                                    {String(timeRemaining.seconds).padStart(2, '0')}
+                                </span>
+                                <span className="text-[10px] text-gray-500 font-bold mt-1">SEC</span>
+                            </div>
+                        </div>
+
+                        {/* Admin Controls */}
+                        {isAdmin && (
+                            <div className="flex justify-center gap-2 mt-2 pt-2 border-t border-gray-100">
+                                <button
+                                    onClick={async () => {
+                                        const startAt = new Date(Date.now() + 15000)
+                                        const { error } = await supabase.from('event_settings').update({ booking_opens_at: startAt.toISOString(), booking_closes_at: null }).eq('id', 1)
+                                        if (!error) { setBookingOpensAt(startAt); setBookingClosesAt(null) }
+                                    }}
+                                    className="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded hover:bg-green-700"
+                                >
+                                    START (15s)
+                                </button>
+                                <button
+                                    onClick={async () => {
+                                        const closeAt = new Date()
+                                        const { error } = await supabase.from('event_settings').update({ booking_closes_at: closeAt.toISOString() }).eq('id', 1)
+                                        if (!error) { setBookingClosesAt(closeAt) }
+                                    }}
+                                    className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700"
+                                >
+                                    STOP
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* CENTER: Billboard & Mobile Layout */}
+                <div className="flex flex-col items-center order-2 w-full lg:w-auto">
+
+                    {/* MOBILE ONLY: Top Countdown */}
+                    <div className="lg:hidden w-full max-w-[600px] mb-2 px-2">
+                        <div className="bg-white rounded-xl shadow-lg p-2 sm:p-4 flex items-center justify-between border-b-4 border-gray-200">
+                            <span className="text-sm sm:text-xl font-bold text-gray-800 tracking-tight">booking starts in</span>
+                            {/* Admin Controls embedded here for desktop/mobile accessibility if needed, or specific admin panel logic could go here */}
+                            {isAdmin && (
+                                <div className="hidden sm:flex gap-2">
+                                    <button
+                                        onClick={async () => {
+                                            const startAt = new Date(Date.now() + 15000)
+                                            const { error } = await supabase.from('event_settings').update({ booking_opens_at: startAt.toISOString(), booking_closes_at: null }).eq('id', 1)
+                                            if (!error) { setBookingOpensAt(startAt); setBookingClosesAt(null) }
+                                        }}
+                                        className="px-2 py-1 bg-green-600 text-white text-[10px] sm:text-xs font-bold rounded"
+                                    >
+                                        START (15s)
+                                    </button>
+                                    <button
+                                        onClick={async () => {
+                                            const closeAt = new Date()
+                                            const { error } = await supabase.from('event_settings').update({ booking_closes_at: closeAt.toISOString() }).eq('id', 1)
+                                            if (!error) { setBookingClosesAt(closeAt) }
+                                        }}
+                                        className="px-2 py-1 bg-red-600 text-white text-[10px] sm:text-xs font-bold rounded"
+                                    >
+                                        STOP
+                                    </button>
+                                </div>
+                            )}
+                            <div className="flex flex-col items-center bg-gray-100 rounded-lg p-1 px-2 sm:p-2 border border-gray-200">
+                                <span className="text-lg sm:text-2xl font-mono font-bold text-gray-900 leading-none">
+                                    {String(timeRemaining.seconds).padStart(2, '0')}
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] text-gray-500 font-bold mt-0.5 sm:mt-1">SEC</span>
+                            </div>
+                        </div>
                     </div>
 
+                    {/* Toolbar - Above Billboard */}
+                    {selectedPlots.length > 0 && (
+                        <div className="lg:hidden mb-2 sm:mb-6 md:mb-8 w-full max-w-[700px] flex justify-center z-30 relative px-3 sm:px-0">
+                            <GridToolbar
+                                selectionCount={selectedPlots.length}
+                                sizeLabel={sizeLabel}
+                                onClear={() => setSelectedPlots([])}
+                                onPurchase={() => handleStartPurchase(selectedPlots)}
+                            />
+                        </div>
+                    )}
+
                     {/* Billboard Structure */}
-                    <div className="relative flex flex-col items-center">
+                    <div className="relative flex flex-col items-center z-20 pt-10">
                         {/* The Board Frame */}
-                        <div className="relative z-10 bg-gray-800 p-4 shadow-2xl rounded-sm flex flex-col gap-2">
+                        <div className="relative z-20 bg-gray-800 p-2 sm:p-4 shadow-2xl rounded-sm flex flex-col gap-2 scale-90 sm:scale-100 origin-top lg:scale-100 transition-transform duration-300">
                             {/* Inner Bezel with Grid */}
                             <div className="bg-gray-900 p-2 border-4 border-gray-700/50 shadow-inner">
                                 <BillboardGrid
@@ -349,115 +448,103 @@ function App() {
                                 Pattu Bazaar • Est 2026
                             </div>
                         </div>
+
+                        {/* DESKTOP ONLY: Stand/Pole */}
+                        <div className="hidden lg:block w-40 h-[200px] mt-[-2px] bg-gradient-to-r from-gray-700 to-gray-600 border-x-4 border-gray-800 shadow-2xl z-10"></div>
+                    </div>
+
+                    {/* MOBILE ONLY: Pole & Split Stats */}
+                    <div className="lg:hidden relative w-full flex justify-center mt-[-30px] sm:mt-[-2px] pb-8 overflow-visible z-10 transition-all">
+                        {/* The Pole */}
+                        <div className="absolute top-0 w-24 sm:w-32 h-[300px] bg-gradient-to-r from-gray-300 to-gray-400 border-x-2 border-gray-400/50 z-0"></div>
+
+                        {/* Stats Container */}
+                        <div className="relative z-10 flex w-full max-w-[500px] justify-between px-4 mt-8 gap-2">
+
+                            {/* Left: Capacity */}
+                            <div className="bg-gray-200/90 backdrop-blur-sm p-2 sm:p-4 rounded-lg shadow-xl border-2 border-white/50 w-28 sm:w-32 flex flex-col items-center justify-center text-center gap-1 transform rotate-[-2deg]">
+                                <span className="text-emerald-500 font-bold text-lg sm:text-2xl drop-shadow-sm">
+                                    {Math.round((bookedSlots.size / 100) * 100)}%
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] font-bold text-gray-600 uppercase leading-tight bg-white/50 px-2 py-1 rounded">
+                                    Capacity<br />Reached
+                                </span>
+                            </div>
+
+                            {/* Right: Booked/Available */}
+                            <div className="bg-gray-200/90 backdrop-blur-sm p-2 sm:p-4 rounded-lg shadow-xl border-2 border-white/50 w-28 sm:w-32 flex flex-col items-center justify-center text-center gap-2 transform rotate-[2deg]">
+                                <div className="flex flex-col">
+                                    <span className="text-[9px] sm:text-[10px] font-bold text-gray-600 uppercase">Booked</span>
+                                    <span className="text-rose-500 font-bold text-sm sm:text-lg">{bookedSlots.size}</span>
+                                </div>
+                                <div className="w-full h-px bg-gray-300"></div>
+                                <div className="flex flex-col">
+                                    <span className="text-[9px] sm:text-[10px] font-bold text-gray-600 uppercase">Available</span>
+                                    <span className="text-emerald-500 font-bold text-sm sm:text-lg">{100 - bookedSlots.size}</span>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-                {/* Right Side: Statistics & Countdown (Fixed + Centered Vertically) */}
-                <div className="flex flex-col justify-center gap-4 md:gap-6 h-full w-full max-w-md lg:max-w-none mx-auto">
-                    {/* Countdown Card */}
-                    <div className="bg-white/90 backdrop-blur rounded-2xl p-4 sm:p-6 shadow-xl border border-white/50">
-                        <h3 className="text-gray-500 text-xs font-bold tracking-wider mb-4 uppercase text-center">
-                            {bookingClosesAt && new Date() > bookingClosesAt ? "Booking Closed" : (timeRemaining.seconds > 0 || timeRemaining.minutes > 0 || timeRemaining.hours > 0 ? "Event Starts In" : "Booking Open!")}
-                        </h3>
-                        {/* Admin Controls */}
-                        {isAdmin && (
-                            <div className="flex justify-center gap-2 mb-4">
-                                <button
-                                    onClick={async () => {
-                                        const startAt = new Date(Date.now() + 15000)
-                                        const { error } = await supabase
-                                            .from('event_settings')
-                                            .update({
-                                                booking_opens_at: startAt.toISOString(),
-                                                booking_closes_at: null
-                                            })
-                                            .eq('id', 1)
 
-                                        if (error) {
-                                            console.error(error)
-                                            alert('Failed to start timer! Check Supabase table "event_settings"')
-                                        } else {
-                                            // Immediately update local state for instant feedback
-                                            setBookingOpensAt(startAt)
-                                            setBookingClosesAt(null)
-                                        }
-                                    }}
-                                    className="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded hover:bg-green-700 transition shadow-sm"
-                                >
-                                    START (15s)
-                                </button>
-                                <button
-                                    onClick={async () => {
-                                        const closeAt = new Date()
-                                        const { error } = await supabase
-                                            .from('event_settings')
-                                            .update({ booking_closes_at: closeAt.toISOString() })
-                                            .eq('id', 1)
-
-                                        if (error) {
-                                            console.error(error)
-                                            alert('Failed to stop booking!')
-                                        } else {
-                                            // Immediately update local state
-                                            setBookingClosesAt(closeAt)
-                                        }
-                                    }}
-                                    className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition shadow-sm"
-                                >
-                                    STOP
-                                </button>
-                            </div>
-                        )}
-                        <div className="flex justify-between gap-1 sm:gap-2">
-                            <div className="flex flex-col items-center">
-                                <div className="text-2xl sm:text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-1.5 sm:p-2 min-w-[50px] sm:min-w-[60px] text-center border border-gray-200">
-                                    {String(timeRemaining.hours).padStart(2, '0')}
-                                </div>
-                                <span className="text-[10px] text-gray-400 font-bold mt-1">HRS</span>
-                            </div>
-                            <div className="text-xl sm:text-2xl font-bold text-gray-300 self-start mt-1 sm:mt-2">:</div>
-                            <div className="flex flex-col items-center">
-                                <div className="text-2xl sm:text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-1.5 sm:p-2 min-w-[50px] sm:min-w-[60px] text-center border border-gray-200">
-                                    {String(timeRemaining.minutes).padStart(2, '0')}
-                                </div>
-                                <span className="text-[10px] text-gray-400 font-bold mt-1">MIN</span>
-                            </div>
-                            <div className="text-xl sm:text-2xl font-bold text-gray-300 self-start mt-1 sm:mt-2">:</div>
-                            <div className="flex flex-col items-center">
-                                <div className="text-2xl sm:text-3xl font-bold text-gray-800 font-mono bg-gray-100 rounded-lg p-1.5 sm:p-2 min-w-[50px] sm:min-w-[60px] text-center border border-gray-200">
-                                    {String(timeRemaining.seconds).padStart(2, '0')}
-                                </div>
-                                <span className="text-[10px] text-gray-400 font-bold mt-1">SEC</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Stats Card */}
-                    <div className="bg-white/90 backdrop-blur rounded-2xl p-4 sm:p-6 shadow-xl border border-white/50 flex flex-col gap-3 sm:gap-4">
-                        <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                            <span className="text-gray-500 text-xs font-bold uppercase">Booked Slots</span>
-                            <span className="text-2xl font-bold text-rose-500">{bookedSlots.size}</span>
-                        </div>
-
-                        <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                            <span className="text-gray-500 text-xs font-bold uppercase">Available</span>
-                            <span className="text-2xl font-bold text-emerald-500">{100 - bookedSlots.size}</span>
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                            <span className="text-gray-500 text-xs font-bold uppercase">Selected</span>
-                            <span className="text-2xl font-bold text-blue-500">{selectedPlots.length}</span>
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="mt-2 w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                {/* DESKTOP ONLY: Right Side (Stats) */}
+                <div className="hidden lg:flex flex-col gap-6 w-80 items-center justify-center order-3">
+                    {/* Capacity */}
+                    <div className="bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border-4 border-gray-100 w-full flex flex-col items-center justify-center text-center gap-2 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                        <span className="text-emerald-500 font-bold text-5xl drop-shadow-sm">
+                            {Math.round((bookedSlots.size / 100) * 100)}%
+                        </span>
+                        <span className="text-sm font-bold text-gray-500 uppercase leading-tight bg-gray-50 px-3 py-1 rounded">
+                            Capacity Reached
+                        </span>
+                        <div className="mt-2 w-full h-3 bg-gray-200 rounded-full overflow-hidden border border-gray-300">
                             <div
                                 className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-500"
                                 style={{ width: `${(bookedSlots.size / 100) * 100}%` }}
                             />
                         </div>
-                        <div className="text-center text-[10px] text-gray-400 font-medium">
-                            {Math.round((bookedSlots.size / 100) * 100)}% Capacity Reached
+                    </div>
+
+                    {/* Booked/Available */}
+                    <div className="bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-xl border-4 border-gray-100 w-full flex flex-col items-center justify-center text-center gap-4 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+                        <div className="flex justify-between w-full items-center">
+                            <span className="text-sm font-bold text-gray-500 uppercase">Booked Slots</span>
+                            <span className="text-rose-500 font-bold text-2xl">{bookedSlots.size}</span>
                         </div>
+                        <div className="w-full h-px bg-gray-200"></div>
+                        <div className="flex justify-between w-full items-center">
+                            <span className="text-sm font-bold text-gray-500 uppercase">Available</span>
+                            <span className="text-emerald-500 font-bold text-2xl">{100 - bookedSlots.size}</span>
+                        </div>
+                        <div className="w-full h-px bg-gray-200"></div>
+                        <div className="flex justify-between w-full items-center">
+                            <span className="text-sm font-bold text-gray-500 uppercase">Selected</span>
+                            <div className="flex flex-col items-end">
+                                <span className="text-blue-500 font-bold text-2xl">{selectedPlots.length}</span>
+                                {sizeLabel && <span className="text-[10px] text-gray-400 font-medium">{sizeLabel}</span>}
+                            </div>
+                        </div>
+
+                        {selectedPlots.length > 0 && (
+                            <>
+                                <div className="w-full h-px bg-gray-200"></div>
+                                <div className="flex gap-2 w-full pt-2">
+                                    <button
+                                        onClick={() => setSelectedPlots([])}
+                                        className="flex-1 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-bold rounded hover:bg-gray-200 transition-colors uppercase"
+                                    >
+                                        Clear
+                                    </button>
+                                    <button
+                                        onClick={() => handleStartPurchase(selectedPlots)}
+                                        className="flex-1 px-3 py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 transition-colors uppercase shadow-lg shadow-blue-200"
+                                    >
+                                        Book
+                                    </button>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
 
