@@ -5,6 +5,7 @@ interface Props {
     sizeLabel?: string;
     onClear: () => void;
     onPurchase: () => void;
+    disabled?: boolean;
 }
 
 export const GridToolbar: React.FC<Props> = ({
@@ -12,6 +13,7 @@ export const GridToolbar: React.FC<Props> = ({
     sizeLabel,
     onClear,
     onPurchase,
+    disabled = false,
 }) => {
     return (
         <div className="flex gap-4 items-center p-2 bg-white rounded-lg shadow-sm border border-gray-200">
@@ -30,7 +32,7 @@ export const GridToolbar: React.FC<Props> = ({
                 </button>
                 <button
                     onClick={onPurchase}
-                    disabled={selectionCount === 0}
+                    disabled={selectionCount === 0 || disabled}
                     className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md shadow-blue-200 disabled:shadow-none"
                 >
                     Book Selected

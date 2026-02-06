@@ -96,7 +96,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onLogin }) => {
                 </form>
 
                 <div className="mt-6 text-center text-xs text-gray-400">
-                    Restricted Access • Pattu Bazaar 2026
+                    Restricted Access
                 </div>
             </div>
         </div>

@@ -24,6 +24,8 @@ function App() {
         minutes: 0,
         seconds: 0
     })
+    const [isBookingLive, setIsBookingLive] = useState(false)
+    const [totalSeconds, setTotalSeconds] = useState(0)
 
     // Auth State
     const [currentUser, setCurrentUser] = useState<{ email: string; venue: string; role: string } | null>(null)
@@ -77,20 +79,49 @@ function App() {
 
             const now = new Date()
             const diff = bookingOpensAt.getTime() - now.getTime()
+            const isLive = diff <= 0 && (!bookingClosesAt || now < bookingClosesAt)
+
+            setIsBookingLive(isLive)
 
             if (diff > 0) {
+                const totalSec = Math.floor(diff / 1000)
+                setTotalSeconds(totalSec)
+
+                // Tick Tock Effect for last 3 seconds
+                if (totalSec <= 3 && totalSec > 0) {
+                    // Create a brief beep using AudioContext or Audio element if possible, or just rely on visual pulse
+                    // Since we can't easily add assets, we'll use a simple visual cue state implicitly by using totalSec
+                    // But user asked for "tick tick timer". Visual pulse is good.
+                    // Trying a simple beep using data URI
+                    try {
+                        const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+                        const oscillator = audioCtx.createOscillator();
+                        const gainNode = audioCtx.createGain();
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioCtx.destination);
+                        oscillator.type = 'sine';
+                        oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                        oscillator.start();
+                        oscillator.stop(audioCtx.currentTime + 0.1);
+                    } catch (e) {
+                        // Ignore audio errors
+                    }
+                }
+
                 setTimeRemaining({
                     hours: Math.floor(diff / (1000 * 60 * 60)),
                     minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
                     seconds: Math.floor((diff % (1000 * 60)) / 1000)
                 })
             } else {
+                setTotalSeconds(0)
                 setTimeRemaining({ hours: 0, minutes: 0, seconds: 0 })
             }
         }, 1000)
 
         return () => clearInterval(interval)
-    }, [bookingOpensAt])
+    }, [bookingOpensAt, bookingClosesAt])
 
     // Fetch Bookings & Realtime Subscription
     useEffect(() => {
@@ -324,26 +355,19 @@ function App() {
                         </div>
 
                         <div className="flex justify-center gap-2 mb-4">
-                            <div className="flex flex-col items-center bg-gray-50 rounded-lg p-2 border border-gray-200 min-w-[60px]">
-                                <span className="text-3xl font-mono font-bold text-gray-900 leading-none">
-                                    {String(timeRemaining.hours).padStart(2, '0')}
-                                </span>
-                                <span className="text-[10px] text-gray-500 font-bold mt-1">HRS</span>
-                            </div>
-                            <span className="text-2xl font-bold text-gray-300 mt-2">:</span>
-                            <div className="flex flex-col items-center bg-gray-50 rounded-lg p-2 border border-gray-200 min-w-[60px]">
-                                <span className="text-3xl font-mono font-bold text-gray-900 leading-none">
-                                    {String(timeRemaining.minutes).padStart(2, '0')}
-                                </span>
-                                <span className="text-[10px] text-gray-500 font-bold mt-1">MIN</span>
-                            </div>
-                            <span className="text-2xl font-bold text-gray-300 mt-2">:</span>
-                            <div className="flex flex-col items-center bg-gray-50 rounded-lg p-2 border border-gray-200 min-w-[60px]">
-                                <span className="text-3xl font-mono font-bold text-gray-900 leading-none">
-                                    {String(timeRemaining.seconds).padStart(2, '0')}
-                                </span>
-                                <span className="text-[10px] text-gray-500 font-bold mt-1">SEC</span>
-                            </div>
+                            {isBookingLive ? (
+                                <div className="flex flex-col items-center animate-pulse">
+                                    <span className="text-4xl font-black text-emerald-600 tracking-wider">LIVE</span>
+                                    <span className="text-xs font-bold text-emerald-500 uppercase tracking-widest">Booking Open</span>
+                                </div>
+                            ) : (
+                                <div className={`flex flex-col items-center bg-gray-50 rounded-lg p-4 border border-gray-200 min-w-[120px] transition-all duration-200 ${totalSeconds <= 3 && totalSeconds > 0 ? 'scale-110 bg-red-50 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : ''}`}>
+                                    <span className={`text-5xl font-mono font-bold leading-none ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-600' : 'text-gray-900'}`}>
+                                        {totalSeconds}
+                                    </span>
+                                    <span className={`text-xs font-bold mt-1 tracking-widest ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-500'}`}>SECONDS</span>
+                                </div>
+                            )}
                         </div>
 
                         {/* Admin Controls */}
@@ -407,10 +431,16 @@ function App() {
                                 </div>
                             )}
                             <div className="flex flex-col items-center bg-gray-100 rounded-lg p-1 px-2 sm:p-2 border border-gray-200">
-                                <span className="text-lg sm:text-2xl font-mono font-bold text-gray-900 leading-none">
-                                    {String(timeRemaining.seconds).padStart(2, '0')}
-                                </span>
-                                <span className="text-[9px] sm:text-[10px] text-gray-500 font-bold mt-0.5 sm:mt-1">SEC</span>
+                                {isBookingLive ? (
+                                    <span className="text-lg sm:text-2xl font-black text-emerald-600 leading-none tracking-wider animate-pulse">LIVE</span>
+                                ) : (
+                                    <>
+                                        <span className={`text-lg sm:text-2xl font-mono font-bold leading-none ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-600' : 'text-gray-900'}`}>
+                                            {totalSeconds}
+                                        </span>
+                                        <span className={`text-[9px] sm:text-[10px] font-bold mt-0.5 sm:mt-1 ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-500'}`}>SEC</span>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -423,6 +453,7 @@ function App() {
                                 sizeLabel={sizeLabel}
                                 onClear={() => setSelectedPlots([])}
                                 onPurchase={() => handleStartPurchase(selectedPlots)}
+                                disabled={!isBookingLive}
                             />
                         </div>
                     )}
@@ -445,7 +476,7 @@ function App() {
 
                             {/* Integrated Bottom Plaque */}
                             <div className="w-full py-2 bg-gray-800 flex items-center justify-center text-[10px] text-gray-400 font-bold tracking-[0.2em] uppercase border-t border-gray-700/50">
-                                Pattu Bazaar • Est 2026
+                                Pattu Bazaar
                             </div>
                         </div>
 
@@ -538,7 +569,8 @@ function App() {
                                     </button>
                                     <button
                                         onClick={() => handleStartPurchase(selectedPlots)}
-                                        className="flex-1 px-3 py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 transition-colors uppercase shadow-lg shadow-blue-200"
+                                        disabled={!isBookingLive}
+                                        className="flex-1 px-3 py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors uppercase shadow-lg shadow-blue-200 disabled:shadow-none"
                                     >
                                         Book
                                     </button>
