@@ -20,14 +20,6 @@ const INITIAL_ADS: Ad[] = Array.from({ length: 100 }, (_, i) => ({
 }))
 
 function App() {
-    const [timeRemaining, setTimeRemaining] = useState({
-        hours: 0,
-        minutes: 0,
-        seconds: 0
-    })
-    const [isBookingLive, setIsBookingLive] = useState(false)
-    const [totalSeconds, setTotalSeconds] = useState(0)
-
     // Auth State
     const [currentUser, setCurrentUser] = useState<{ email: string; venue: string; role: string } | null>(null)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -47,12 +39,6 @@ function App() {
     const userBookedSlots = useMemo(() => {
         if (!currentUser) return new Set<string>()
         return new Set(bookings.filter(b => b.user_email === currentUser.email).map(b => b.plot_id))
-    }, [bookings, currentUser])
-
-    const userBookedSong = useMemo(() => {
-        if (!currentUser) return null
-        const booking = bookings.find(b => b.user_email === currentUser.email)
-        return booking?.song_name || null
     }, [bookings, currentUser])
 
     // Derived admin state based on logged in user role
