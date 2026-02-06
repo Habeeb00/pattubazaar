@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useMemo } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import bannerImg from './assets/banner.png'
 import { BillboardGrid } from './components/BillboardGrid'
 import { GridToolbar } from './components/GridToolbar'
@@ -572,6 +573,7 @@ function App() {
             </div>
             {/* Tooltip Portal Root */}
             <div id="tooltip-root"></div>
+            <Analytics />
         </div>
     )
 }
