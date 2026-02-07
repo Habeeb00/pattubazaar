@@ -580,6 +580,7 @@ function App() {
             </div>
             {/* Tooltip Portal Root */}
             <div id="tooltip-root"></div>
+            <Analytics />
         </div>
     )
 }
