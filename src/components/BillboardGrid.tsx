@@ -187,34 +187,46 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({
                 </div>
             )}
 
-            {isHovered && !isAdmin && ad.link && (
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10 transition-opacity">
-                    <button
-                        onClick={handleLinkClick}
-                        className="bg-[#FF007F] text-white px-4 py-2 text-xs font-bold border border-white/20 shadow-[0_4px_10px_rgba(255,0,127,0.5)] hover:bg-[#ff3399] transition-all rounded-full uppercase tracking-wider"
-                    >
-                        Visit
-                    </button>
-                </div>
-            )}
+            {isHovered && (
+                <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-2 z-10 gap-2 transition-all duration-300 animate-in fade-in">
+                    <p className="text-white text-[10px] sm:text-xs font-black text-center break-words max-w-full px-1 drop-shadow-md uppercase tracking-tight font-display">
+                        {ad.message}
+                    </p>
+                    {ad.venueName && (
+                        <p className="text-gray-400 text-[8px] sm:text-[10px] font-medium text-center">
+                            by {ad.venueName}
+                        </p>
+                    )}
 
-            {isHovered && isAdmin && (
-                <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center p-2 z-10 gap-2">
-                    <p className="text-white text-xs text-center truncate max-w-full px-2">{ad.message}</p>
-                    {ad.link && (
+                    {/* Link button for non-admins if link exists */}
+                    {!isAdmin && ad.link && (
                         <button
                             onClick={handleLinkClick}
-                            className="bg-gradient-to-b from-blue-500 to-blue-700 text-white border-4 border-blue-400 px-3 py-1 text-xs font-bold hover:from-blue-600 hover:to-blue-800 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_rgba(0,0,0,0.3)] hover:translate-x-[1px] hover:translate-y-[1px]"
+                            className="bg-[#FF007F] text-white px-3 py-1 text-[8px] sm:text-[10px] font-bold border border-white/20 shadow-[0_2px_5px_rgba(255,0,127,0.4)] hover:bg-[#ff3399] transition-all rounded-full uppercase tracking-wider"
                         >
-                            🔗 Visit Link
+                            Visit
                         </button>
                     )}
-                    <button
-                        onClick={handleDeleteClick}
-                        className="bg-gradient-to-b from-red-500 to-red-700 text-white border-4 border-red-400 px-3 py-1 text-xs font-bold hover:from-red-600 hover:to-red-800 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_rgba(0,0,0,0.3)] hover:translate-x-[1px] hover:translate-y-[1px]"
-                    >
-                        Unbook
-                    </button>
+
+                    {/* Admin specific controls */}
+                    {isAdmin && (
+                        <div className="flex flex-col gap-1 w-full scale-90 sm:scale-100">
+                            {ad.link && (
+                                <button
+                                    onClick={handleLinkClick}
+                                    className="bg-blue-600 text-white px-2 py-1 text-[8px] sm:text-[10px] font-bold hover:bg-blue-700 transition-all rounded shadow-sm"
+                                >
+                                    Visit Link
+                                </button>
+                            )}
+                            <button
+                                onClick={handleDeleteClick}
+                                className="bg-red-600 text-white px-2 py-1 text-[8px] sm:text-[10px] font-bold hover:bg-red-700 transition-all rounded shadow-sm"
+                            >
+                                Unbook
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
