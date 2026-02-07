@@ -178,7 +178,7 @@ function App() {
         const ad = ads.find(a => a.id === adId)
         if (!ad) return
 
-        if (window.confirm('Unbook this slot?')) {
+        if (window.confirm('Unbook this song?')) {
             // Find bookings to delete
             for (const plotId of ad.plots) {
                 // Find booking ID
@@ -190,11 +190,11 @@ function App() {
                         .eq('id', booking.id)
 
                     if (error) {
-                        alert('Error unbooking slot')
+                        alert('Error unbooking song')
                         console.error(error)
                     } else {
                         console.log('Deleted booking for', plotId)
-                        alert('Slot unbooked successfully!')
+                        alert('Song unbooked successfully!')
                     }
                 }
             }
@@ -219,24 +219,24 @@ function App() {
 
         if (plots.length === 0) return
         if (plots.length > 1) {
-            alert('Please select only one slot')
+            alert('Please select only one song')
             return
         }
 
         // Check if slot is already booked
         if (purchasedPlotIds.has(plots[0])) {
-            alert('This slot is already booked!')
+            alert('This song is already booked!')
             return
         }
 
         // User can only book 1 slot total, Admin can book unlimited
         if (!isAdmin && userBookedSlots.size >= 1) {
-            alert('Users can only book 1 slot. Switch to Admin mode to book more slots.')
+            alert('Users can only book 1 song. Switch to Admin mode to book more songs.')
             return
         }
 
         // Simple confirmation - book the selected slot
-        if (window.confirm('Book this slot?')) {
+        if (window.confirm('Book this song?')) {
             if (!currentUser) return
 
             const plotId = plots[0]
@@ -256,9 +256,9 @@ function App() {
             if (error) {
                 // Check for duplicate key error (Postgres 23505)
                 if (error.code === '23505') {
-                    alert('⚠️ Too slow! Someone else just booked this slot.\n\nThe content has been updated.')
+                    alert('⚠️ Too slow! Someone else just booked this song.\n\nThe content has been updated.')
                 } else {
-                    alert('Failed to book slot. Please try again.')
+                    alert('Failed to book song. Please try again.')
                     console.error(error)
                 }
             } else {
@@ -326,7 +326,7 @@ function App() {
                         <img src={bookedImage} alt="Booked Song" className="w-full h-full object-contain rounded-lg border-4 border-black" />
                         <div className="absolute bottom-8 left-0 right-0 text-center">
                             <span className="bg-black/80 text-white px-6 py-3 rounded-full text-2xl font-bold tracking-widest border border-white/20 shadow-xl">
-                                SLOT BOOKED!
+                                SONG BOOKED!
                             </span>
                         </div>
                     </div>
@@ -537,7 +537,7 @@ function App() {
                     {/* Booked/Available */}
                     <div className="bg-white/90 backdrop-blur-sm p-6 w-full flex flex-col items-center justify-center text-center gap-4 transform -rotate-1 hover:rotate-0 transition-transform duration-300 rounded-xl shadow-xl border border-white/40">
                         <div className="flex justify-between w-full items-center">
-                            <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Booked Slots</span>
+                            <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Booked Songs</span>
                             <span className="text-pink-500 font-bold text-3xl font-display">{bookedSlots.size}</span>
                         </div>
                         <div className="w-full h-px bg-gray-200"></div>

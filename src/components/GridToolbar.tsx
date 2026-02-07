@@ -19,7 +19,7 @@ export const GridToolbar: React.FC<Props> = ({
         <div className="flex gap-4 items-center p-3 bg-white border-4 border-gray-200 rounded-lg shadow-xl">
             <div className="px-2">
                 <div className="text-sm font-bold text-gray-900 font-display">
-                    <span className="text-gray-900 text-lg">{selectionCount}</span> slot{selectionCount !== 1 ? 's' : ''} selected
+                    <span className="text-gray-900 text-lg">{selectionCount}</span> song{selectionCount !== 1 ? 's' : ''} selected
                 </div>
                 {sizeLabel && <div className="text-xs text-gray-500 font-medium font-mono">{sizeLabel}</div>}
             </div>

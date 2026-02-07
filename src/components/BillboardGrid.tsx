@@ -240,7 +240,7 @@ const EmptyPlot: React.FC<EmptyPlotProps> = ({ plotId, isSelected, onMouseDown, 
             }}
             onMouseEnter={onMouseEnter}
             className={`${baseClasses} ${isSelected ? selectedClasses : ""}`}
-            aria-label={`Book slot ${plotId}`}
+            aria-label={`Book song ${plotId}`}
         ></div>
     );
 };
