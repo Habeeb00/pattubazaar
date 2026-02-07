@@ -1,13 +1,46 @@
 import React, { useState } from 'react';
+import bannerImg from '../assets/banner.png';
 
 // Hardcoded authorized users
 // In a real app, this would be in a database
 export const AUTHORIZED_USERS = [
-    { venue: "ADMIN", email: "admin@pattubazaar.com", role: "admin" },
-    { venue: "Entrance Hall", email: "entrance@pattubazaar.com", role: "user" },
-    { venue: "Food Court", email: "food@pattubazaar.com", role: "user" },
-    { venue: "VIP Lounge", email: "vip@pattubazaar.com", role: "user" },
-    { venue: "Parking Zone", email: "parking@pattubazaar.com", role: "user" }
+    { venue: "ADMIN", email: "admin@thh.com", role: "admin" },
+    { venue: "MOWS Hub Manjeri", email: "mr.adilazeez@gmail.com", role: "user" },
+    { venue: "Bharata Mata College Thrikkakara", email: "nahnamusthafa@gmail.com", role: "user" },
+    { venue: "ASAP Community Skill Park Kasargod", email: "fidhaknaufal07@gmail.com", role: "user" },
+    { venue: "Christ College of Engineering Autonomous,Irinjalakuda", email: "hk9117430@gmail.com", role: "user" },
+    { venue: "College of Engineering and Management Punnapra", email: "Krishnenduv488@gmail.com", role: "user" },
+    { venue: "College of engineering perumon", email: "lalartha317@gmail.com", role: "user" },
+    { venue: "EMEA COLLEGE OF ARTS AND SCIENCE, KONDOTY", email: "hilfamuneer@gmail.com", role: "user" },
+    { venue: "Government engineering college kozhikode", email: "fuadabdu.x@gmail.com", role: "user" },
+    { venue: "Government Engineering College Sreekrishnapuram", email: "sreelakshmijayasekaran@gmail.com", role: "user" },
+    { venue: "Government Engineering College Thrissur", email: "gect@gmail.com", role: "user" },
+    { venue: "IEDC-College of Engineering Pathanapuram", email: "sreeshps@gmail.com", role: "user" },
+    { venue: "Ilahia College of Engineering and Technology", email: "afeefaparvin88@gmail.com", role: "user" },
+    { venue: "Jyothi Engineering College", email: "aneenaot.cs23@jecc.ac.in", role: "user" },
+    { venue: "KAHM Unity Women's College, Manjeri", email: "salhamkhalfan@gmail.com", role: "user" },
+    { venue: "Kannur University Mangattuparamba Campus", email: "muhammedlamihmv@gmail.com", role: "user" },
+    { venue: "KMCT college of Engineering,Calicut", email: "razafathima4492@gmail.com", role: "user" },
+    { venue: "LBS Institute of Technology, Women", email: "nehajobinalappatt@gmail.com", role: "user" },
+    { venue: "Nss college of engineering Palakkad", email: "arjunk.karjun.arjunk@gmail.com", role: "user" },
+    { venue: "Rajiv Gandhi institute of technology Kottayam", email: "fidhaafath@gmail.com", role: "user" },
+    { venue: "Saintgits Collage Of Engineering", email: "poojasn.er2428@saintgits.org", role: "user" },
+    { venue: "SCMS School of Engineering and Technology, Karukutty", email: "fatimasanaissahac543@gmail.com", role: "user" },
+    { venue: "Venture nest, Farook college", email: "aliadraseen@gmail.com", role: "user" },
+    { venue: "Cochin University College of Engineering Kuttanad", email: "cucek@gmail.com", role: "user" },
+    { venue: "College of Engineering Chengannur", email: "swathy062006@gmail.com", role: "user" },
+    { venue: "College of Engineering Kallooppara", email: "akhilaanil347@gmail.com", role: "user" },
+    { venue: "College of Engineering Karunagappally", email: "sumayyasainu2826@gmail.com", role: "user" },
+    { venue: "College of Engineering Thalassery", email: "navdhavasanthn@gmail.com", role: "user" },
+    { venue: "College of Engineering, Poonjar", email: "rosecep24@gmail.com", role: "user" },
+    { venue: "Government Engineering college Idukki", email: "emilshaju18@gmail.com", role: "user" },
+    { venue: "ICCS College of engineering and management", email: "nppavithra798@gmail.com", role: "user" },
+    { venue: "Muthoot Institute of Technology and Science", email: "himabaijuraj@gmail.com", role: "user" },
+    { venue: "S N M Institute of Management and Technology", email: "febajosy681@gmail.com", role: "user" },
+    { venue: "Sree Narayana Gurukulam College of Engineering", email: "abhirampraneeth2005@gmail.com", role: "user" },
+    { venue: "Viswajyothi college of engineering and technology", email: "prk18042005@gmail.com", role: "user" },
+    { venue: "College of Engineering Adoor", email: "silpapm.2007@gmail.com", role: "user" },
+    { venue: "College of Engineering Trivandrum", email: "nikhilmw.dev@gmail.com", role: "user" }
 ];
 
 interface AuthModalProps {
@@ -39,9 +72,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onLogin }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#4169E1] backdrop-blur-md">
             <div className="bg-white/90 backdrop-blur-sm p-8 w-full max-w-md relative overflow-hidden rounded-xl shadow-2xl border border-white/40 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
 
-                <div className="text-center mb-8">
-                    <h2 className="text-4xl font-black text-gray-900 mb-2 font-display uppercase tracking-wider">Welcome</h2>
-                    <p className="text-gray-500 font-medium tracking-wide">Pattu Bazaar Event Access</p>
+                <div className="flex justify-center mb-8">
+                    <img src={bannerImg} alt="Venue Theme Song" className="w-48 h-auto object-contain drop-shadow-md" />
                 </div>
 
                 <form onSubmit={handleLogin} className="flex flex-col gap-6">
@@ -97,7 +129,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onLogin }) => {
                 </form>
 
                 <div className="mt-6 text-center text-[10px] text-gray-400 uppercase tracking-[0.2em] font-display">
-                    Restricted Access • Pattu Bazaar 2026
+                    Restricted Access • Venue Theme Song
                 </div>
             </div>
         </div>

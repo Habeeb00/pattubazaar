@@ -282,7 +282,7 @@ function App() {
 
             {/* Banner Image - Top Left Corner */}
             <div className="absolute top-0 left-0 z-50 p-4">
-                <img src={bannerImg} alt="Pattu Bazaar" className="w-24 sm:w-32 h-auto object-contain drop-shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300" />
+                <img src={bannerImg} alt="Venue Theme Song" className="w-32 sm:w-48 h-auto object-contain drop-shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300" />
             </div>
 
             {/* Compact Header */}
@@ -339,23 +339,26 @@ function App() {
                 {/* DESKTOP ONLY: Left Side (Countdown) */}
                 <div className="hidden lg:flex flex-col gap-6 w-80 items-center justify-center order-1 z-10">
                     <div className="w-full bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-300 border border-white/40">
-                        <div className="text-center mb-6">
-                            <span className="text-2xl font-bold text-gray-800 font-display tracking-wider uppercase drop-shadow-sm">Booking Starts In</span>
-                        </div>
-
-                        <div className="flex justify-center gap-2 mb-4">
+                        {/* Booking Countdown Content matching Capacity Card style */}
+                        <div className="flex flex-col items-center justify-center gap-2">
                             {isBookingLive ? (
-                                <div className="flex flex-col items-center animate-pulse">
-                                    <span className="text-5xl font-black text-white tracking-wider font-display drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">LIVE</span>
-                                    <span className="text-xs font-bold text-pink-300 uppercase tracking-widest mt-2">Booking Open</span>
-                                </div>
+                                <>
+                                    <span className="text-red-600 font-display font-black text-7xl drop-shadow-sm animate-pulse">
+                                        LIVE
+                                    </span>
+                                    <span className="text-xs font-bold text-gray-500 uppercase leading-tight tracking-widest px-3 py-1">
+                                        Booking Open
+                                    </span>
+                                </>
                             ) : (
-                                <div className={`flex flex-col items-center bg-gray-50 rounded-lg p-6 min-w-[140px] border-4 border-gray-200 transition-all duration-200 ${totalSeconds <= 3 && totalSeconds > 0 ? 'scale-110 border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : ''}`}>
-                                    <span className={`text-6xl font-mono font-black leading-none ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-900'}`}>
+                                <>
+                                    <span className={`font-display font-black text-7xl drop-shadow-sm ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-900'}`}>
                                         {totalSeconds}
                                     </span>
-                                    <span className={`text-xs font-bold mt-2 tracking-[0.3em] uppercase ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-400'}`}>Seconds</span>
-                                </div>
+                                    <span className={`text-xs font-bold uppercase leading-tight tracking-widest px-3 py-1 ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-500'}`}>
+                                        Booking Starts In
+                                    </span>
+                                </>
                             )}
                         </div>
 
@@ -392,11 +395,10 @@ function App() {
 
                     {/* MOBILE ONLY: Top Countdown */}
                     <div className="lg:hidden w-full max-w-[600px] mb-2 px-2 z-30">
-                        <div className="bg-white/90 backdrop-blur-sm p-3 sm:p-6 rounded-xl shadow-xl border border-white/40 flex items-center justify-between">
-                            <span className="text-sm sm:text-lg font-bold text-gray-800 font-display uppercase tracking-wide">booking starts in</span>
-                            {/* Admin Controls embedded here for desktop/mobile accessibility if needed, or specific admin panel logic could go here */}
+                        <div className="bg-white/90 backdrop-blur-sm p-4 sm:p-6 rounded-xl shadow-xl border border-white/40 flex flex-col items-center justify-center gap-2">
+                            {/* Admin Controls */}
                             {isAdmin && (
-                                <div className="hidden sm:flex gap-2">
+                                <div className="flex gap-2 mb-2">
                                     <button
                                         onClick={async () => {
                                             const startAt = new Date(Date.now() + 15000)
@@ -419,15 +421,21 @@ function App() {
                                     </button>
                                 </div>
                             )}
-                            <div className={`flex flex-col items-center bg-gray-50 rounded-lg px-3 py-2 sm:p-3 min-w-[70px] border-2 border-gray-200 ${totalSeconds <= 3 && totalSeconds > 0 ? 'border-red-500 bg-red-50' : ''}`}>
+
+                            <div className="flex flex-col items-center">
                                 {isBookingLive ? (
-                                    <span className="text-lg sm:text-2xl font-black text-emerald-600 leading-none tracking-wider animate-pulse font-display">LIVE</span>
+                                    <>
+                                        <span className="text-4xl sm:text-5xl font-black text-red-600 leading-none tracking-wider animate-pulse font-display drop-shadow-sm">LIVE</span>
+                                        <span className="text-[10px] sm:text-xs font-bold text-gray-500 uppercase leading-tight tracking-widest px-2 py-1 mt-1">Booking Open</span>
+                                    </>
                                 ) : (
                                     <>
-                                        <span className={`text-xl sm:text-3xl font-mono font-bold leading-none ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-600' : 'text-gray-900'}`}>
+                                        <span className={`text-4xl sm:text-5xl font-display font-black leading-none drop-shadow-sm ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-900'}`}>
                                             {totalSeconds}
                                         </span>
-                                        <span className={`text-[9px] sm:text-[10px] font-bold mt-0.5 sm:mt-1 uppercase tracking-wider ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-400'}`}>SEC</span>
+                                        <span className={`text-[10px] sm:text-xs font-bold uppercase leading-tight tracking-widest px-2 py-1 mt-1 ${totalSeconds <= 3 && totalSeconds > 0 ? 'text-red-500' : 'text-gray-500'}`}>
+                                            Booking Starts In
+                                        </span>
                                     </>
                                 )}
                             </div>
@@ -465,7 +473,7 @@ function App() {
 
                             {/* Integrated Bottom Plaque */}
                             <div className="w-full py-2 flex items-center justify-center text-[10px] text-[#FF007F] font-black tracking-[0.3em] uppercase border-t border-white/5 font-display drop-shadow-[0_0_5px_rgba(255,0,127,0.8)]">
-                                Pattu Bazaar • Est 2026
+                                Venue Theme Song
                             </div>
                         </div>
 
