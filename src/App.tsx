@@ -118,7 +118,10 @@ function App() {
 
             // Songs
             try {
-                const { data: songsData } = await supabase.from('songs').select('*')
+                const { data: songsData } = await supabase
+                    .from('songs')
+                    .select('*')
+                    .order('track_index', { ascending: true })
                 if (songsData && songsData.length > 0) {
                     setAds(prevAds => prevAds.map((ad, i) => {
                         const song = songsData[i % songsData.length]
