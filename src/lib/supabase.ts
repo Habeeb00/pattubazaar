@@ -13,6 +13,7 @@ export interface Song {
     artist: string
     cover_url: string
     preview_url: string | null
+    track_index: number
     is_claimed: boolean
     claimed_by: string | null
     claimed_at: string | null
