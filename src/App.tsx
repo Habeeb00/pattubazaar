@@ -10,14 +10,17 @@ import type { Ad } from './types'
 
 // Pre-fill all 100 slots with album covers (but not booked yet)
 // These are just preview images - users can book any slot
-const INITIAL_ADS: Ad[] = Array.from({ length: 100 }, (_, i) => ({
-    id: `preview-${i}`,
-    plots: [`${Math.floor(i / 10)}-${i % 10}`],
-    imageUrl: `https://picsum.photos/seed/${i}/400/400`,
-    message: `Song ${i + 1}`,
-    venueName: `Artist ${String.fromCharCode(65 + (i % 26))}`,
-    link: undefined,
-}))
+const INITIAL_ADS: Ad[] = Array.from({ length: 95 }, (_, i) => {
+    const imgIndex = i + 1;
+    return {
+        id: `preview-${i}`,
+        plots: [`${Math.floor(i / 10)}-${i % 10}`],
+        imageUrl: new URL(`./assets/coverImage/img${imgIndex}.jpg.webp`, import.meta.url).href,
+        message: `Song ${i + 1}`,
+        venueName: `Artist ${String.fromCharCode(65 + (i % 26))}`,
+        link: undefined,
+    };
+})
 
 function App() {
     // Auth State
@@ -27,7 +30,7 @@ function App() {
     const [totalSeconds, setTotalSeconds] = useState(0)
 
     const [selectedPlots, setSelectedPlots] = useState<string[]>([])
-    const [ads] = useState<Ad[]>(INITIAL_ADS)
+    const [ads, setAds] = useState<Ad[]>(INITIAL_ADS)
 
     // Supabase Bookings State
     // Supabase Bookings State
@@ -112,6 +115,23 @@ function App() {
             // Bookings
             const { data: bookingsData } = await supabase.from('bookings').select('*')
             if (bookingsData) setBookings(bookingsData)
+
+            // Songs
+            try {
+                const { data: songsData } = await supabase.from('songs').select('*')
+                if (songsData && songsData.length > 0) {
+                    setAds(prevAds => prevAds.map((ad, i) => {
+                        const song = songsData[i % songsData.length]
+                        return {
+                            ...ad,
+                            message: song.title,
+                            venueName: song.artist
+                        }
+                    }))
+                }
+            } catch (err) {
+                console.error('Error fetching songs:', err)
+            }
 
             // Settings
             const { data: settingsData } = await supabase.from('event_settings').select('*').single()
