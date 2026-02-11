@@ -7,15 +7,34 @@ import { AuthModal } from './components/AuthModal'
 import { supabase } from './lib/supabase'
 import type { Ad } from './types'
 
+// Explicit imports for images 96-100 (different extension)
+import img96 from './assets/coverImage/img96.webp'
+import img97 from './assets/coverImage/img97.webp'
+import img98 from './assets/coverImage/img98.webp'
+import img99 from './assets/coverImage/img99.webp'
+import img100 from './assets/coverImage/img100.webp'
+
+// Map for images 96-100
+const specialImages: Record<number, string> = {
+    96: img96,
+    97: img97,
+    98: img98,
+    99: img99,
+    100: img100,
+}
 
 // Pre-fill all 100 slots with album covers (but not booked yet)
 // These are just preview images - users can book any slot
-const INITIAL_ADS: Ad[] = Array.from({ length: 95 }, (_, i) => {
+const INITIAL_ADS: Ad[] = Array.from({ length: 100 }, (_, i) => {
     const imgIndex = i + 1;
+    // Use explicit imports for 96-100, dynamic URL for others
+    const imageUrl = specialImages[imgIndex] 
+        ? specialImages[imgIndex]
+        : new URL(`./assets/coverImage/img${imgIndex}.jpg.webp`, import.meta.url).href;
     return {
         id: `preview-${i}`,
         plots: [`${Math.floor(i / 10)}-${i % 10}`],
-        imageUrl: new URL(`./assets/coverImage/img${imgIndex}.jpg.webp`, import.meta.url).href,
+        imageUrl,
         message: `Song ${i + 1}`,
         venueName: `Artist ${String.fromCharCode(65 + (i % 26))}`,
         link: undefined,
