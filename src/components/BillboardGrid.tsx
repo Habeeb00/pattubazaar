@@ -133,6 +133,7 @@ interface PurchasedAdProps {
     onMouseEnter: (e: React.MouseEvent<HTMLDivElement>, ad: Ad) => void;
     onMouseLeave: () => void;
     onMouseDown: (plotId: string) => void;
+    onTap: (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>, ad: Ad) => void;
     isHovered: boolean;
 }
 
@@ -145,6 +146,7 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({
     onMouseEnter,
     onMouseLeave,
     onMouseDown,
+    onTap,
     isHovered,
 }) => {
     const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -160,10 +162,18 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({
     };
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        // For mobile: show tooltip on click
+        onTap(e, ad);
         if (!isBooked) {
             e.preventDefault();
             onMouseDown(ad.plots[0]);
         }
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+        // Show tooltip on tap for mobile
+        e.preventDefault();
+        onTap(e, ad);
     };
 
     return (
@@ -173,7 +183,8 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({
             style={getAdBoundingBox(ad)}
             onMouseEnter={(e) => onMouseEnter(e, ad)}
             onMouseLeave={onMouseLeave}
-            onMouseDown={handleClick}
+            onClick={handleClick}
+            onTouchEnd={handleTouchEnd}
             aria-label={`Ad: ${ad.message}`}
         >
             <img src={ad.imageUrl} alt={ad.message} className="w-full h-full object-cover" />
@@ -188,16 +199,7 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({
             )}
 
             {isHovered && (
-                <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-2 z-10 gap-2 transition-all duration-300 animate-in fade-in">
-                    <p className="text-white text-[10px] sm:text-xs font-black text-center break-words max-w-full px-1 drop-shadow-md uppercase tracking-tight font-display">
-                        {ad.message}
-                    </p>
-                    {ad.venueName && (
-                        <p className="text-gray-400 text-[8px] sm:text-[10px] font-medium text-center">
-                            by {ad.venueName}
-                        </p>
-                    )}
-
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-2 z-10 gap-2 transition-all duration-300 animate-in fade-in">
                     {/* Link button for non-admins if link exists */}
                     {!isAdmin && ad.link && (
                         <button
@@ -314,6 +316,35 @@ export function BillboardGrid({
 
     const handleHideTooltip = useCallback(() => setTooltip(null), []);
 
+    // Handle tap/click for mobile - toggle tooltip
+    const handleTapTooltip = useCallback((e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>, ad: Ad) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        // Toggle: if same ad is tapped, hide it; otherwise show new one
+        setTooltip(prev => {
+            if (prev?.ad.id === ad.id) {
+                return null;
+            }
+            return { ad, rect };
+        });
+    }, []);
+
+    // Close tooltip when clicking outside the grid
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+            if (gridRef.current && !gridRef.current.contains(e.target as Node)) {
+                setTooltip(null);
+            }
+        };
+        
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('touchstart', handleClickOutside);
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('touchstart', handleClickOutside);
+        };
+    }, []);
+
     // Keyboard navigation & selection
     const [focusedCell, setFocusedCell] = useState<string | null>(null);
     useEffect(() => {
@@ -383,6 +414,7 @@ export function BillboardGrid({
                                     onMouseEnter={handleShowTooltip}
                                     onMouseLeave={handleHideTooltip}
                                     onMouseDown={handleMouseDown}
+                                    onTap={handleTapTooltip}
                                     isHovered={tooltip?.ad.id === plotAdInfo.ad.id}
                                 />
                             );
