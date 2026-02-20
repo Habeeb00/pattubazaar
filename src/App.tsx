@@ -376,7 +376,7 @@ function App() {
             )}
 
             {/* Main Content - Centered Layout for both Mobile & Desktop */}
-            <div className="flex-1 w-full mx-auto p-3 sm:p-4 md:p-6 flex flex-col lg:flex-row items-center lg:items-center gap-4 md:gap-6 lg:gap-12 overflow-y-auto lg:overflow-hidden justify-center h-full min-h-0">
+            <div className="flex-1 w-full mx-auto p-3 sm:p-4 md:p-6 flex flex-col lg:flex-row items-center lg:items-center gap-4 md:gap-6 lg:gap-12 overflow-y-auto justify-center min-h-0">
 
                 {/* DESKTOP ONLY: Left Side (Countdown) */}
                 <div className="hidden lg:flex flex-col gap-6 w-80 items-center justify-center order-1 z-10">

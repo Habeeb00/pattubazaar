@@ -4,7 +4,7 @@ import bannerImg from "../assets/banner.png";
 // Hardcoded authorized users
 // In a real app, this would be in a database
 export const AUTHORIZED_USERS = [
-  { venue: "ADMIN", email: "admin@thh.com", role: "admin" },
+  { venue: "ADMIN", email: "pattubazar@thh.com", role: "admin" },
   { venue: "test", email: "test@thh.com", role: "user" },
   {
     venue: "Adi Shankara Institute of Engineering and Technology",
