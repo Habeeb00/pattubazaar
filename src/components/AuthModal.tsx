@@ -111,6 +111,136 @@ export const AUTHORIZED_USERS = [
     email: "prk18042005@gmail.com",
     role: "user",
   },
+  {
+    venue: "Ahalia school of engineering and technology",
+    email: "nithyaramesh0407@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "Albertian Institute of Science and Technology",
+    email: "suhashajahan855@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "Cochin University College of Engineering Kuttanad",
+    email: "rprahulofficial07@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "College of Engineering Adoor",
+    email: "silpapm.2007@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "College of Engineering Chengannur",
+    email: "swathy062006@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "College of engineering perumon",
+    email: "lalartha317@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "College of Engineering Thalassery",
+    email: "navdhavasanthn@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "College of Engineering Trivandrum",
+    email: "gsgopikasg@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "College of Engineering Vadakara",
+    email: "mayukhakavilpadikkal@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "College of Engineering, Poonjar",
+    email: "rosecep24@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "Government Engineering College Sreekrishnapuram",
+    email: "sreelakshmijayasekaran@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "Govt. Model Engineering College, Thrikkakara",
+    email: "elizabethbobby169@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "Mar Athanasius College of Engineering",
+    email: "nandanasnair2005@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "MBCCET peermade",
+    email: "arshinabeevi47@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "MES College of Engineering and Technology, Kunnukara",
+    email: "kmashraf8281@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "National Institute of Technology Calicut",
+    email: "preethi@nitc.ac.in",
+    role: "user",
+  },
+  {
+    venue: "Nirmala College Muvattupuzha (Autonomous)",
+    email: "dinu@nirmalacollege.ac.in",
+    role: "user",
+  },
+  {
+    venue: "Providence College for Women (Autonomous), Coonoor. The Nilgiris.",
+    email: "sashirekharavikumar@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "Sree Narayana Guru college of engineering & Technology, Payyanur",
+    email: "hod.ee@sngcet.ac.in",
+    role: "user",
+  },
+  {
+    venue: "Sree Narayana Gurukulam College of Engineering",
+    email: "aabismiya@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "Sreepathy Institute of Management and Technology",
+    email: "namithamurali491@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "St. Stephen's College, Uzhavoor",
+    email: "prof.navithajose@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "St. Stephen's College, Uzhavoor",
+    email: "info@ststephens.net.in",
+    role: "user",
+  },
+  {
+    venue: "TinkerSpace Kochi",
+    email: "jasim@tinkerhub.org",
+    role: "user",
+  },
+  {
+    venue: "TKM College of Engineering",
+    email: "iamsnehask05@gmail.com",
+    role: "user",
+  },
+  {
+    venue: "Vidya Academy of Science and Technology Thrissur",
+    email: "anil.m@vidyaacademy.ac.in",
+    role: "user",
+  },
 ];
 
 interface AuthModalProps {
